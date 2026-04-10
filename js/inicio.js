@@ -31,7 +31,8 @@ function updateNavbarForLoggedUser() {
   const container = document.getElementById("navAuthButtons");
   if (!container) return;
   if (currentUser) {
-    const dashboardUrl = currentUser.role === 'candidato' ? 'candidato-dashboard.html' : 'empresa.html';
+    // const dashboardUrl = currentUser.role === 'candidato' ? 'candidato-dashboard.html' : 'empresa.html';
+    const dashboardUrl = 'perfil.html';
     container.innerHTML = `
       <div class="dropdown">
         <button class="btn btn-light rounded-pill dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">

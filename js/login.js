@@ -94,10 +94,16 @@ function authenticate(email, password, requestedRole) {
   return session;
 }
 
+// function redirectToDashboard(role) {
+//   if (role === "candidato") window.location.href = "candidato-dashboard.html";
+//   else if (role === "empresa") window.location.href = "empresa.html";
+//   else if (role === "admin") window.location.href = "admin.html";
+// }
+
+// Reemplaza esta función en tu js/login.js
 function redirectToDashboard(role) {
-  if (role === "candidato") window.location.href = "candidato-dashboard.html";
-  else if (role === "empresa") window.location.href = "empresa.html";
-  else if (role === "admin") window.location.href = "admin.html";
+  // Ahora todos van al perfil unificado
+  window.location.href = "perfil.html";
 }
 
 // ======================== ANIMACIÓN DE ICONOS ========================
