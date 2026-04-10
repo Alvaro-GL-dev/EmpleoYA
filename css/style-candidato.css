@@ -1,0 +1,133 @@
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: #f4f7fc;
+}
+
+.navbar-brand {
+  font-weight: 800;
+  font-size: 1.7rem;
+  background: linear-gradient(135deg, #0b5ed7, #0a58ca);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+.avatar-sm {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.avatar-lg {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 2.5rem;
+}
+
+#navTabs .nav-link {
+  background: none;
+  border: none;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: 40px;
+  color: #4a5568;
+  transition: all 0.2s;
+}
+
+#navTabs .nav-link.active {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.search-bar .form-control,
+.search-bar .form-select,
+.search-bar .input-group-text {
+  border-radius: 60px;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  padding: 0.7rem 1.2rem;
+}
+
+.search-bar .btn-primary {
+  border-radius: 60px;
+  padding: 0.7rem 2rem;
+}
+
+.job-card {
+  border: none;
+  border-radius: 24px;
+  background: white;
+  transition: transform 0.2s ease, box-shadow 0.2s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.job-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.12);
+}
+
+.apply-link {
+  text-decoration: none;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.2s;
+}
+
+.apply-link:hover {
+  gap: 12px;
+}
+
+.card-profile {
+  border: none;
+  border-radius: 32px;
+  background: white;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
+}
+
+.solicitud-card {
+  border-left: 4px solid #0d6efd;
+  background: white;
+  border-radius: 20px;
+  transition: 0.2s;
+}
+
+.solicitud-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.toast-notification {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 1100;
+  min-width: 260px;
+}
+
+@media (max-width: 768px) {
+  #navTabs .nav-link {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}

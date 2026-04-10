@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>EmpleoYa | Encuentra tu próximo empleo</title>
+  <!-- Bootstrap 5 + Icons + Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-white py-3 shadow-sm sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="#">Empleo<span class="text-primary">Ya</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarMain">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link active fw-semibold" href="#">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Buscar Empleos</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Empresas</a></li>
+      </ul>
+      <div class="d-flex gap-2 align-items-center" id="navAuthButtons">
+        <!-- Se llena dinámicamente con JS -->
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero + Buscador -->
+<div class="container text-center mt-5 pt-2">
+  <h1 class="fw-bold display-5 mb-3">Encuentra tu próximo empleo hoy</h1>
+  <p class="text-muted mb-4">Más de 5,000 ofertas activas en tecnología, marketing, diseño y más.</p>
+  <div class="search-bar d-flex justify-content-center gap-3 flex-wrap">
+    <div class="flex-fill" style="min-width: 200px;">
+      <div class="input-group">
+        <span class="input-group-text bg-white"><i class="bi bi-search"></i></span>
+        <input type="text" id="searchKeyword" class="form-control" placeholder="Cargo, palabra clave...">
+      </div>
+    </div>
+    <div class="flex-fill" style="min-width: 160px;">
+      <select class="form-select" id="filterLocation">
+        <option value="">Todas las ubicaciones</option>
+        <option>San Salvador</option>
+        <option>Santa Ana</option>
+        <option>San Miguel</option>
+        <option>Remoto</option>
+      </select>
+    </div>
+    <div class="flex-fill" style="min-width: 160px;">
+      <select class="form-select" id="filterType">
+        <option value="">Todos los tipos</option>
+        <option>Tiempo completo</option>
+        <option>Medio tiempo</option>
+        <option>Freelance</option>
+      </select>
+    </div>
+    <button class="btn btn-primary" id="searchBtn"><i class="bi bi-search"></i> Buscar</button>
+  </div>
+</div>
+
+<!-- Listado de ofertas -->
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="fw-bold mb-0"><i class="bi bi-star-fill text-warning me-2"></i>Ofertas destacadas</h5>
+    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill" id="jobCount">0 empleos</span>
+  </div>
+  <div class="row g-4" id="jobsContainer">
+    <!-- Las tarjetas se generan con JS -->
+  </div>
+</div>
+
+<footer class="text-center text-muted py-4 border-top mt-5">
+  <div class="container">EmpleoYa · Conectando talento con oportunidades · © 2025</div>
+</footer>
+
+<!-- Toast de notificaciones -->
+<div class="toast-notification" id="liveToast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/inicio.js"></script>
+</body>
+</html>

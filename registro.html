@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>EmpleoYa | Crear Cuenta</title>
+  <!-- Bootstrap 5 + Icons + Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style-registro.css">
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-white py-3 shadow-sm">
+  <div class="container">
+    <a class="navbar-brand" href="#">Empleo<span class="text-primary">Ya</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="#" id="goToPublicJobs">Buscar Empleos</a></li>
+      </ul>
+      <div class="d-flex gap-2">
+        <button class="btn btn-outline-primary rounded-pill" id="uploadCVBtn">Cargar CV</button>
+        <button class="btn btn-outline-primary rounded-pill" id="goToLoginBtn">INICIAR SESIÓN</button>
+        <button class="btn btn-primary rounded-pill" id="goToRegisterBtn">REGISTRARSE</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-4 mb-5">
+  <div class="row justify-content-center text-center mb-4">
+    <div class="col-md-8">
+      <h1 class="fw-bold display-6">Únete a Empleo<span class="text-primary">Ya</span></h1>
+      <p class="text-muted fs-5">Crea tu cuenta y accede a miles de oportunidades</p>
+    </div>
+  </div>
+
+  <div class="row justify-content-center align-items-center g-4">
+    <!-- Icono Candidato (izquierda) -->
+    <div class="col-auto d-none d-md-block">
+      <div class="icon-circle" id="iconCandidato">
+        <i class="bi bi-person-fill"></i>
+      </div>
+    </div>
+
+    <!-- Formulario central con animación -->
+    <div class="col-md-6 col-lg-5">
+      <div class="form-container-box">
+        <ul class="nav nav-pills mb-4 justify-content-center" id="registerRoleTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="candidato-tab" data-bs-toggle="pill" data-bs-target="#candidatoPanel" type="button" role="tab">Soy Candidato</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="empresa-tab" data-bs-toggle="pill" data-bs-target="#empresaPanel" type="button" role="tab">Soy Empresa</button>
+          </li>
+        </ul>
+
+        <div class="tab-content animated-tabs" id="registerTabContent">
+          <!-- Panel Candidato -->
+          <div class="tab-pane fade show active" id="candidatoPanel" role="tabpanel">
+            <form id="registerCandidatoForm">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Nombre completo</label>
+                <input type="text" class="form-control rounded-pill" id="candidatoNombre" placeholder="Juan Pérez" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Correo electrónico</label>
+                <input type="email" class="form-control rounded-pill" id="candidatoEmail" placeholder="tu@email.com" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Teléfono (opcional)</label>
+                <input type="tel" class="form-control rounded-pill" id="candidatoTelefono" placeholder="+503 7012 3456">
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Contraseña</label>
+                <input type="password" class="form-control rounded-pill" id="candidatoPassword" placeholder="Mínimo 4 caracteres" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Confirmar contraseña</label>
+                <input type="password" class="form-control rounded-pill" id="candidatoConfirmPassword" placeholder="Repite tu contraseña" required>
+              </div>
+              <div class="mb-3 form-check text-start">
+                <input type="checkbox" class="form-check-input" id="termsCandidato" required>
+                <label class="form-check-label text-muted small" for="termsCandidato">Acepto los <a href="#" class="text-primary">Términos y condiciones</a></label>
+              </div>
+              <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-semibold">Crear Cuenta</button>
+            </form>
+          </div>
+
+          <!-- Panel Empresa -->
+          <div class="tab-pane fade" id="empresaPanel" role="tabpanel">
+            <form id="registerEmpresaForm">
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Nombre de la empresa</label>
+                <input type="text" class="form-control rounded-pill" id="empresaNombre" placeholder="TechCorp Solutions" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Correo corporativo</label>
+                <input type="email" class="form-control rounded-pill" id="empresaEmail" placeholder="contacto@tuempresa.com" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Teléfono de contacto</label>
+                <input type="tel" class="form-control rounded-pill" id="empresaTelefono" placeholder="+503 2200 0000">
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Contraseña</label>
+                <input type="password" class="form-control rounded-pill" id="empresaPassword" placeholder="Mínimo 4 caracteres" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label fw-semibold">Confirmar contraseña</label>
+                <input type="password" class="form-control rounded-pill" id="empresaConfirmPassword" placeholder="Repite tu contraseña" required>
+              </div>
+              <div class="mb-3 form-check text-start">
+                <input type="checkbox" class="form-check-input" id="termsEmpresa" required>
+                <label class="form-check-label text-muted small" for="termsEmpresa">Acepto los <a href="#" class="text-primary">Términos y condiciones</a></label>
+              </div>
+              <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-semibold">Registrar Empresa</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="text-center mt-4">
+          <span class="text-muted">¿Ya tienes cuenta? </span>
+          <a href="#" id="goToLoginLink" class="text-primary fw-bold text-decoration-none">Iniciar sesión</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Icono Empresa (derecha) -->
+    <div class="col-auto d-none d-md-block">
+      <div class="icon-circle" id="iconEmpresa">
+        <i class="bi bi-building"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Redes sociales -->
+  <div class="row justify-content-center mt-5">
+    <div class="col-md-6 text-center">
+      <p class="text-muted mb-3">O regístrate con tus redes sociales</p>
+      <div class="d-flex gap-3 justify-content-center flex-wrap">
+        <button class="btn btn-social-google" id="socialGoogleReg"><i class="bi bi-google me-2"></i> Google</button>
+        <button class="btn btn-social-linkedin" id="socialLinkedinReg"><i class="bi bi-linkedin me-2"></i> LinkedIn</button>
+        <button class="btn btn-social-facebook" id="socialFacebookReg"><i class="bi bi-facebook me-2"></i> Facebook</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast de notificaciones -->
+<div class="toast-notification" id="liveToast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/registro.js"></script>
+</body>
+</html>
