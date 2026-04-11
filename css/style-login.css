@@ -1,0 +1,159 @@
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #f4f7fc 0%, #e9eef4 100%);
+  min-height: 100vh;
+}
+
+.navbar-brand {
+  font-weight: 800;
+  font-size: 1.7rem;
+  background: linear-gradient(135deg, #0b5ed7, #0a58ca);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+.form-container-box {
+  background: white;
+  padding: 2rem;
+  border-radius: 32px;
+  box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s;
+}
+
+.form-container-box:hover {
+  transform: translateY(-2px);
+}
+
+.nav-pills .nav-link {
+  border-radius: 60px;
+  padding: 0.6rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.nav-pills .nav-link.active {
+  background-color: #0d6efd;
+  color: white;
+}
+
+/* Animación estilo iPhone para los tabs */
+.animated-tabs {
+  position: relative;
+  min-height: 320px;
+}
+
+.tab-pane {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform-origin: center;
+}
+
+.tab-pane.fade {
+  opacity: 0;
+  transform: translateX(8px) scale(0.98);
+}
+
+.tab-pane.fade.show {
+  opacity: 1;
+  transform: translateX(0) scale(1);
+}
+
+/* Para el cambio de iconos también con animación */
+.icon-circle {
+  width: 130px;
+  height: 130px;
+  background: linear-gradient(145deg, #0d6efd, #0a58ca);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 15px 25px -8px rgba(13, 110, 253, 0.3);
+  transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+.icon-circle i {
+  font-size: 3.2rem;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.icon-circle:hover {
+  transform: scale(1.03);
+  box-shadow: 0 20px 30px -8px rgba(13, 110, 253, 0.4);
+}
+
+/* Botones sociales */
+.btn-social-google {
+  background-color: #DB4437;
+  color: white;
+  border: none;
+  border-radius: 60px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.btn-social-google:hover {
+  background-color: #C1351D;
+  color: white;
+}
+
+.btn-social-linkedin {
+  background-color: #0A66C2;
+  color: white;
+  border: none;
+  border-radius: 60px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 500;
+}
+
+.btn-social-linkedin:hover {
+  background-color: #004182;
+  color: white;
+}
+
+.btn-social-facebook {
+  background-color: #1877F2;
+  color: white;
+  border: none;
+  border-radius: 60px;
+  padding: 0.6rem 1.2rem;
+  font-weight: 500;
+}
+
+.btn-social-facebook:hover {
+  background-color: #0F5BB5;
+  color: white;
+}
+
+.btn-primary-custom {
+  background-color: #0d6efd;
+  border-radius: 60px;
+  padding: 0.7rem;
+  font-weight: 600;
+}
+
+.toast-notification {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 1100;
+  min-width: 280px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .icon-circle {
+    width: 80px;
+    height: 80px;
+  }
+  .icon-circle i {
+    font-size: 2rem;
+  }
+  .form-container-box {
+    padding: 1.5rem;
+  }
+}

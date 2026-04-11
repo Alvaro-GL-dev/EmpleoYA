@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Foros - EmpleoYa</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+      rel="stylesheet"
+    />
+    <link
+        rel="stylesheet" href="css/style-foro.css"   
+    /> 
+  </head>
+  <body>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+      <div class="container-xl">
+        <a class="navbar-brand" href="#">Empleo<span>Ya</span></a>
+        <button
+          class="navbar-toggler border-0"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navMain"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navMain">
+          <ul class="navbar-nav mx-auto align-items-lg-center">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Buscar Empleos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Mis solicitudes</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="recursos.html">Recursos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="foros.html">Foros</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="#">Mi perfil</a></li>
+          </ul>
+          <div class="d-flex gap-2 mt-2 mt-lg-0">
+            <a href="#" class="btn-nav-primary">Cargar CV</a>
+            <a href="#" class="btn-nav-outline">Cerrar sesión</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- HERO -->
+    <div class="page-hero">
+      <div class="container-xl">
+        <h1>Foro de la comunidad</h1>
+        <p>Comparte experiencias y resuelve dudas sobre empleo</p>
+        <div class="search-cta">
+          <div class="search-wrap">
+            <i class="bi bi-search"></i>
+            <input type="text" placeholder="Buscar preguntas o temas..." />
+          </div>
+          <a href="foro-crear.html" class="btn-crear"
+            ><i class="bi bi-plus-lg"></i> Crear publicación</a
+          >
+        </div>
+        <div class="tabs-row">
+          <ul class="nav nav-pills">
+            <li class="nav-item">
+              <a class="nav-link active" href="#">Todos</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Entrevistas</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="#">CV</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Programación</a>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="#">Salarios</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Experiencia laboral</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <section class="main-wrap">
+      <div class="container-xl">
+        <div class="row g-4">
+          <!-- THREADS -->
+          <div class="col-lg-8">
+            <!-- Thread 1 -->
+            <a href="foro-detalle.html" class="thread-card">
+              <img
+                class="thread-avatar"
+                src="https://i.pravatar.cc/80?img=12"
+                alt="Juan Pérez"
+              />
+              <div class="thread-body">
+                <div class="thread-title">
+                  ¿Cómo prepararse para una entrevista técnica?
+                </div>
+                <div class="thread-meta">
+                  <span class="author">Juan Pérez</span>
+                  <span class="dot">·</span>
+                  <span>Hace 2 horas</span>
+                  <span class="dot">·</span>
+                  <span class="badge-cat bc-entrevistas">Entrevistas</span>
+                </div>
+                <div class="thread-preview">
+                  ¿Qué temas recomiendan estudiar para entrevistas de backend?
+                </div>
+                <div class="thread-footer">
+                  <span
+                    ><i class="bi bi-chat-left-text"></i> 12 respuestas</span
+                  >
+                  <span><i class="bi bi-hand-thumbs-up"></i> 34 votos</span>
+                </div>
+              </div>
+              <button class="thread-more">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </a>
+
+            <!-- Thread 2 -->
+            <a href="foro-detalle.html" class="thread-card">
+              <img
+                class="thread-avatar"
+                src="https://i.pravatar.cc/80?img=5"
+                alt="María López"
+              />
+              <div class="thread-body">
+                <div class="thread-title">
+                  ¿Qué incluir en mi CV si no tengo experiencia?
+                </div>
+                <div class="thread-meta">
+                  <span class="author">María López</span>
+                  <span class="dot">·</span>
+                  <span>Hace 5 horas</span>
+                  <span class="dot">·</span>
+                  <span class="badge-cat bc-cv">CV</span>
+                </div>
+                <div class="thread-preview">
+                  Soy recién egresada y no sé cómo destacar mis proyectos.
+                </div>
+                <div class="thread-footer">
+                  <span><i class="bi bi-chat-left-text"></i> 8 respuestas</span>
+                  <span><i class="bi bi-hand-thumbs-up"></i> 19 votos</span>
+                </div>
+              </div>
+              <button class="thread-more">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </a>
+
+            <!-- Thread 3 -->
+            <a href="foro-detalle.html" class="thread-card">
+              <img
+                class="thread-avatar"
+                src="https://i.pravatar.cc/80?img=33"
+                alt="Carlos Rivas"
+              />
+              <div class="thread-body">
+                <div class="thread-title">
+                  Me ofrecieron un trabajo, ¿cómo negociar el salario?
+                </div>
+                <div class="thread-meta">
+                  <span class="author">Carlos Rivas</span>
+                  <span class="dot">·</span>
+                  <span>Hace 1 día</span>
+                  <span class="dot">·</span>
+                  <span class="badge-cat bc-salarios">Salarios</span>
+                </div>
+                <div class="thread-preview">
+                  ¿Qué consejos me dan para negociar mejor?
+                </div>
+                <div class="thread-footer">
+                  <span
+                    ><i class="bi bi-chat-left-text"></i> 24 respuestas</span
+                  >
+                  <span><i class="bi bi-hand-thumbs-up"></i> 57 votos</span>
+                </div>
+              </div>
+              <button class="thread-more">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </a>
+
+            <!-- Thread 4 -->
+            <a href="foro-detalle.html" class="thread-card">
+              <img
+                class="thread-avatar"
+                src="https://i.pravatar.cc/80?img=47"
+                alt="Ana Torres"
+              />
+              <div class="thread-body">
+                <div class="thread-title">
+                  ¿Qué lenguajes son los más pedidos en 2025?
+                </div>
+                <div class="thread-meta">
+                  <span class="author">Ana Torres</span>
+                  <span class="dot">·</span>
+                  <span>Hace 3 días</span>
+                  <span class="dot">·</span>
+                  <span class="badge-cat bc-programacion">Programación</span>
+                </div>
+                <div class="thread-preview">
+                  Quiero actualizar mis habilidades, ¿qué recomiendan?
+                </div>
+                <div class="thread-footer">
+                  <span
+                    ><i class="bi bi-chat-left-text"></i> 16 respuestas</span
+                  >
+                  <span><i class="bi bi-hand-thumbs-up"></i> 41 votos</span>
+                </div>
+              </div>
+              <button class="thread-more">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </a>
+
+            <!-- Thread 5 -->
+            <a href="foro-detalle.html" class="thread-card">
+              <img
+                class="thread-avatar"
+                src="https://i.pravatar.cc/80?img=22"
+                alt="Luis Martínez"
+              />
+              <div class="thread-body">
+                <div class="thread-title">
+                  ¿Vale la pena hacer un postgrado para conseguir empleo más
+                  rápido?
+                </div>
+                <div class="thread-meta">
+                  <span class="author">Luis Martínez</span>
+                  <span class="dot">·</span>
+                  <span>Hace 4 días</span>
+                  <span class="dot">·</span>
+                  <span class="badge-cat bc-consejos">Consejos</span>
+                </div>
+                <div class="thread-preview">
+                  Estoy evaluando si hacer una maestría o comenzar a trabajar
+                  directamente.
+                </div>
+                <div class="thread-footer">
+                  <span
+                    ><i class="bi bi-chat-left-text"></i> 31 respuestas</span
+                  >
+                  <span><i class="bi bi-hand-thumbs-up"></i> 63 votos</span>
+                </div>
+              </div>
+              <button class="thread-more">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </a>
+
+            <!-- Thread 6 -->
+            <a href="foro-detalle.html" class="thread-card">
+              <img
+                class="thread-avatar"
+                src="https://i.pravatar.cc/80?img=57"
+                alt="Sofía Herrera"
+              />
+              <div class="thread-body">
+                <div class="thread-title">
+                  Tuve una mala experiencia laboral, ¿cómo explicarlo en la
+                  entrevista?
+                </div>
+                <div class="thread-meta">
+                  <span class="author">Sofía Herrera</span>
+                  <span class="dot">·</span>
+                  <span>Hace 5 días</span>
+                  <span class="dot">·</span>
+                  <span class="badge-cat bc-exp">Experiencia laboral</span>
+                </div>
+                <div class="thread-preview">
+                  Me fui de mi último trabajo por conflictos internos. ¿Cómo lo
+                  manejo en la entrevista sin quedar mal?
+                </div>
+                <div class="thread-footer">
+                  <span
+                    ><i class="bi bi-chat-left-text"></i> 20 respuestas</span
+                  >
+                  <span><i class="bi bi-hand-thumbs-up"></i> 48 votos</span>
+                </div>
+              </div>
+              <button class="thread-more">
+                <i class="bi bi-three-dots"></i>
+              </button>
+            </a>
+          </div>
+          <!-- /col threads -->
+
+          <!-- SIDEBAR -->
+          <div class="col-lg-4">
+            <!-- Categorías -->
+            <div class="sidebar-card">
+              <h6>Categorías</h6>
+              <ul class="cat-list">
+                <li>
+                  <a href="#" class="active"
+                    ><i class="bi bi-chat-square-check"></i> Entrevistas</a
+                  >
+                </li>
+                <li>
+                  <a href="#"><i class="bi bi-file-earmark-person"></i> CV</a>
+                </li>
+                <li>
+                  <a href="#"><i class="bi bi-code-slash"></i> Programación</a>
+                </li>
+                <li>
+                  <a href="#"><i class="bi bi-currency-dollar"></i> Salarios</a>
+                </li>
+                <li>
+                  <a href="#"><i class="bi bi-lightbulb"></i> Consejos</a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Usuarios destacados -->
+            <div class="sidebar-card">
+              <h6>Usuarios destacados</h6>
+              <div class="user-rank">
+                <img src="https://i.pravatar.cc/80?img=12" alt="Juan Pérez" />
+                <div class="user-rank-info"><p>Juan Pérez</p></div>
+                <div class="user-rank-pts">
+                  <i class="bi bi-trophy-fill text-warning"></i> 120 pts
+                </div>
+              </div>
+              <div class="user-rank">
+                <img src="https://i.pravatar.cc/80?img=5" alt="María López" />
+                <div class="user-rank-info"><p>María López</p></div>
+                <div class="user-rank-pts">
+                  <i class="bi bi-star-fill text-primary"></i> 99 pts
+                </div>
+              </div>
+              <div class="user-rank">
+                <img src="https://i.pravatar.cc/80?img=33" alt="Carlos Rivas" />
+                <div class="user-rank-info"><p>Carlos Rivas</p></div>
+                <div class="user-rank-pts">
+                  <i class="bi bi-star-fill text-warning"></i> 88 pts
+                </div>
+              </div>
+              <div class="user-rank">
+                <img src="https://i.pravatar.cc/80?img=47" alt="Ana Torres" />
+                <div class="user-rank-info"><p>Ana Torres</p></div>
+                <div class="user-rank-pts">
+                  <i class="bi bi-person-fill text-secondary"></i> 72 pts
+                </div>
+              </div>
+            </div>
+
+            <!-- Reglas -->
+            <div class="sidebar-card">
+              <h6>Reglas del foro</h6>
+              <ul class="rules-list">
+                <li><i class="bi bi-check-circle-fill"></i> Sé respetuoso</li>
+                <li><i class="bi bi-check-circle-fill"></i> No spam</li>
+                <li>
+                  <i class="bi bi-check-circle-fill"></i> Comparte con valor
+                </li>
+                <li>
+                  <i class="bi bi-check-circle-fill"></i> Usa la categoría
+                  correcta
+                </li>
+                <li>
+                  <i class="bi bi-check-circle-fill"></i> Cita tus fuentes
+                </li>
+              </ul>
+            </div>
+          </div>
+          <!-- /sidebar -->
+        </div>
+        <!-- /row -->
+      </div>
+    </section>
+
+    <footer>
+      <div class="container-xl">
+        <p class="mb-0">© 2025 EmpleoYa · Todos los derechos reservados</p>
+      </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/shared-candidato-nav.js"></script>
+  </body>
+</html>

@@ -1,0 +1,107 @@
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: #f4f7fc;
+}
+
+.navbar-brand {
+  font-weight: 800;
+  font-size: 1.7rem;
+  background: linear-gradient(135deg, #0b5ed7, #0a58ca);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+.nav-tabs-custom .nav-link {
+  font-weight: 500;
+  border-radius: 40px;
+  padding: 0.5rem 1.2rem;
+  transition: all 0.2s;
+}
+
+#navTabs .nav-link {
+  background: none;
+  border: none;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: 40px;
+  color: #4a5568;
+  transition: all 0.2s;
+}
+
+#navTabs .nav-link.active {
+  background-color: #0d6efd;
+  color: white;
+}
+
+.card-custom {
+  border: none;
+  border-radius: 28px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03), 0 2px 6px rgba(0, 0, 0, 0.05);
+  background: white;
+}
+
+.job-card {
+  border: none;
+  border-radius: 24px;
+  background: white;
+  transition: transform 0.2s ease, box-shadow 0.2s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.job-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.12);
+}
+
+.badge-status {
+  background-color: #e6f7e6;
+  color: #2e7d32;
+  font-weight: 500;
+  padding: 0.3rem 0.8rem;
+  border-radius: 30px;
+  font-size: 0.7rem;
+}
+
+.candidate-card {
+  border-radius: 20px;
+  border: 1px solid #eef2f8;
+  transition: all 0.2s;
+  background: white;
+}
+
+.candidate-card:hover {
+  border-color: #0d6efd;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  color: #6c757d;
+  transition: 0.2s;
+}
+
+.btn-icon:hover {
+  color: #0d6efd;
+}
+
+.toast-notification {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 1100;
+  min-width: 260px;
+}
+
+@media (max-width: 768px) {
+  #navTabs .nav-link {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
