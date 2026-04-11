@@ -386,6 +386,212 @@ function setupNavbarUpload() {
   });
 }
 
+// ======================== FILTROS RECURSOS ========================
+function normalizeText(value) {
+  return (value || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+}
+
+function setupResourcesFilters() {
+  const container = document.getElementById("recursosTab");
+  if (!container) return;
+
+  const tabs = Array.from(container.querySelectorAll(".tabs-wrap .nav-tabs .nav-link"));
+  const cards = Array.from(container.querySelectorAll(".section-main .col-lg-9 .row.g-3 > .col-md-4"));
+  const searchInput = container.querySelector(".search-box input");
+  const searchBtn = container.querySelector(".search-box .btn-search");
+
+  if (!tabs.length || !cards.length || !searchInput) return;
+
+  const cardGrid = cards[0].parentElement;
+  const emptyState = document.createElement("div");
+  emptyState.className = "col-12";
+  emptyState.style.display = "none";
+  emptyState.innerHTML = '<div class="text-center py-5 text-muted"><i class="bi bi-search me-1"></i>No se encontraron recursos.</div>';
+  cardGrid.appendChild(emptyState);
+
+  const mapTabToCategory = (tabLabel) => {
+    const label = normalizeText(tabLabel);
+    if (label === "todos") return "todos";
+    if (label.includes("curso")) return "cursos";
+    if (label.includes("guia")) return "guias";
+    if (label.includes("consejo")) return "consejos";
+    if (label.includes("plantilla")) return "plantillas cv";
+    return "todos";
+  };
+
+  const mapCardToCategory = (cardCol) => {
+    const badgeText = normalizeText(cardCol.querySelector(".badge-type")?.textContent);
+    const titleText = normalizeText(cardCol.querySelector("h6")?.textContent);
+
+    if (badgeText.includes("guia")) return "guias";
+    if (badgeText.includes("consejo")) return "consejos";
+    if (badgeText.includes("cv") || titleText.includes("plantilla")) return "plantillas cv";
+    if (badgeText.includes("curso")) return "cursos";
+    return "todos";
+  };
+
+  cards.forEach((card) => {
+    card.dataset.category = mapCardToCategory(card);
+    card.dataset.searchable = normalizeText(card.textContent);
+  });
+
+  let activeCategory = mapTabToCategory(tabs.find((tab) => tab.classList.contains("active"))?.textContent || "Todos");
+
+  const applyFilters = () => {
+    const query = normalizeText(searchInput.value);
+    let visible = 0;
+
+    cards.forEach((card) => {
+      const matchesCategory = activeCategory === "todos" || card.dataset.category === activeCategory;
+      const matchesQuery = !query || card.dataset.searchable.includes(query);
+      const show = matchesCategory && matchesQuery;
+      card.style.display = show ? "" : "none";
+      if (show) visible += 1;
+    });
+
+    emptyState.style.display = visible ? "none" : "";
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", (event) => {
+      event.preventDefault();
+      tabs.forEach((item) => item.classList.remove("active"));
+      tab.classList.add("active");
+      activeCategory = mapTabToCategory(tab.textContent);
+      applyFilters();
+    });
+  });
+
+  searchInput.addEventListener("input", applyFilters);
+  searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      applyFilters();
+    }
+  });
+
+  if (searchBtn) {
+    searchBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      applyFilters();
+    });
+  }
+
+  applyFilters();
+}
+
+// ======================== FILTROS FOROS ========================
+function setupForosFilters() {
+  const container = document.getElementById("forosTab");
+  if (!container) return;
+
+  const tabs = Array.from(container.querySelectorAll(".tabs-row .nav-pills .nav-link"));
+  const sidebarCategories = Array.from(container.querySelectorAll(".cat-list a"));
+  const searchInput = container.querySelector(".search-wrap input");
+  const threads = Array.from(container.querySelectorAll(".main-wrap .col-lg-8 .thread-card"));
+
+  if (!tabs.length || !searchInput || !threads.length) return;
+
+  const threadsCol = threads[0].parentElement;
+  const emptyState = document.createElement("div");
+  emptyState.className = "text-center py-5 text-muted";
+  emptyState.style.display = "none";
+  emptyState.innerHTML = '<i class="bi bi-search me-1"></i>No se encontraron publicaciones.';
+  threadsCol.appendChild(emptyState);
+
+  const mapLabelToCategory = (label) => {
+    const text = normalizeText(label);
+    if (text === "todos") return "todos";
+    if (text.includes("entrevista")) return "entrevistas";
+    if (text === "cv") return "cv";
+    if (text.includes("programacion")) return "programacion";
+    if (text.includes("salario")) return "salarios";
+    if (text.includes("consejo")) return "consejos";
+    return "todos";
+  };
+
+  const mapThreadToCategory = (thread) => {
+    const badge = thread.querySelector(".badge-cat");
+    if (!badge) return "todos";
+
+    const classes = Array.from(badge.classList);
+    if (classes.includes("bc-entrevistas")) return "entrevistas";
+    if (classes.includes("bc-cv")) return "cv";
+    if (classes.includes("bc-programacion")) return "programacion";
+    if (classes.includes("bc-salarios")) return "salarios";
+    if (classes.includes("bc-consejos")) return "consejos";
+    return mapLabelToCategory(badge.textContent);
+  };
+
+  threads.forEach((thread) => {
+    thread.dataset.category = mapThreadToCategory(thread);
+    thread.dataset.searchable = normalizeText(thread.textContent);
+  });
+
+  let activeCategory = mapLabelToCategory(tabs.find((tab) => tab.classList.contains("active"))?.textContent || "Todos");
+
+  const syncSidebarActive = () => {
+    sidebarCategories.forEach((link) => {
+      const linkCategory = mapLabelToCategory(link.textContent);
+      link.classList.toggle("active", linkCategory === activeCategory);
+    });
+  };
+
+  const syncTabsActive = () => {
+    const matchingTab = tabs.find((tab) => mapLabelToCategory(tab.textContent) === activeCategory);
+    tabs.forEach((tab) => tab.classList.remove("active"));
+    if (matchingTab) matchingTab.classList.add("active");
+    else tabs[0]?.classList.add("active");
+  };
+
+  const applyFilters = () => {
+    const query = normalizeText(searchInput.value);
+    let visible = 0;
+
+    threads.forEach((thread) => {
+      const matchesCategory = activeCategory === "todos" || thread.dataset.category === activeCategory;
+      const matchesQuery = !query || thread.dataset.searchable.includes(query);
+      const show = matchesCategory && matchesQuery;
+      thread.style.display = show ? "" : "none";
+      if (show) visible += 1;
+    });
+
+    emptyState.style.display = visible ? "none" : "";
+    syncSidebarActive();
+    syncTabsActive();
+  };
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", (event) => {
+      event.preventDefault();
+      activeCategory = mapLabelToCategory(tab.textContent);
+      applyFilters();
+    });
+  });
+
+  sidebarCategories.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      activeCategory = mapLabelToCategory(link.textContent);
+      applyFilters();
+    });
+  });
+
+  searchInput.addEventListener("input", applyFilters);
+  searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      applyFilters();
+    }
+  });
+
+  applyFilters();
+}
+
 // ======================== INICIALIZACION ========================
 document.addEventListener("DOMContentLoaded", () => {
   loadUserData();
@@ -394,6 +600,8 @@ document.addEventListener("DOMContentLoaded", () => {
   renderApplications();
   setupProfileEditing();
   setupNavbarUpload();
+  setupResourcesFilters();
+  setupForosFilters();
 
   document.getElementById("searchBtn")?.addEventListener("click", filterJobs);
   document.getElementById("searchKeyword")?.addEventListener("keyup", (e) => {
