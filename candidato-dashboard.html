@@ -23,7 +23,7 @@
         <li class="nav-item"><button type="button" class="nav-link active" data-tab="buscar">Buscar Empleos</button></li>
         <li class="nav-item"><button type="button" class="nav-link" data-tab="solicitudes">Mis solicitudes</button></li>
         <li class="nav-item"><button type="button" class="nav-link" data-tab="recursos">Recursos</button></li>
-        <li class="nav-item"><button type="button" class="nav-link" data-tab="foros">Foros</button></li>
+        <li class="nav-item"><a class="nav-link" href="foros.html">Foros</a></li>
         <li class="nav-item"><a class="nav-link" href="perfil.html">Mi perfil</a></li>
       </ul>
 
@@ -227,90 +227,6 @@
       </section>
     </div>
 
-    <div id="forosTab" class="tab-content" style="display:none;">
-      <section class="page-hero mt-2">
-        <h1>Foro de la comunidad</h1>
-        <p>Comparte experiencias y resuelve dudas sobre empleo</p>
-
-        <div class="search-cta">
-          <div class="search-wrap">
-            <i class="bi bi-search"></i>
-            <input type="text" placeholder="Buscar preguntas o temas...">
-          </div>
-          <a href="foro-crear.html" class="btn-crear"><i class="bi bi-plus-lg"></i> Crear publicacion</a>
-        </div>
-
-        <div class="tabs-row">
-          <ul class="nav nav-pills">
-            <li class="nav-item"><a class="nav-link active" href="#">Todos</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Entrevistas</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">CV</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Programacion</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Salarios</a></li>
-          </ul>
-        </div>
-      </section>
-
-      <section class="main-wrap">
-        <div class="row g-4">
-          <div class="col-lg-8">
-            <a href="foro-detalle.html" class="thread-card">
-              <img class="thread-avatar" src="https://i.pravatar.cc/80?img=12" alt="Juan Perez">
-              <div class="thread-body">
-                <div class="thread-title">Como prepararse para una entrevista tecnica?</div>
-                <div class="thread-meta"><span class="author">Juan Perez</span><span class="dot">·</span><span>Hace 2 horas</span><span class="dot">·</span><span class="badge-cat bc-entrevistas">Entrevistas</span></div>
-                <div class="thread-preview">Que temas recomiendan estudiar para entrevistas de backend?</div>
-                <div class="thread-footer"><span><i class="bi bi-chat-left-text"></i> 12 respuestas</span><span><i class="bi bi-hand-thumbs-up"></i> 34 votos</span></div>
-              </div>
-            </a>
-
-            <a href="foro-detalle.html" class="thread-card">
-              <img class="thread-avatar" src="https://i.pravatar.cc/80?img=5" alt="Maria Lopez">
-              <div class="thread-body">
-                <div class="thread-title">Que incluir en mi CV si no tengo experiencia?</div>
-                <div class="thread-meta"><span class="author">Maria Lopez</span><span class="dot">·</span><span>Hace 5 horas</span><span class="dot">·</span><span class="badge-cat bc-cv">CV</span></div>
-                <div class="thread-preview">Soy recien egresada y no se como destacar mis proyectos.</div>
-                <div class="thread-footer"><span><i class="bi bi-chat-left-text"></i> 8 respuestas</span><span><i class="bi bi-hand-thumbs-up"></i> 19 votos</span></div>
-              </div>
-            </a>
-
-            <a href="foro-detalle.html" class="thread-card">
-              <img class="thread-avatar" src="https://i.pravatar.cc/80?img=33" alt="Carlos Rivas">
-              <div class="thread-body">
-                <div class="thread-title">Me ofrecieron un trabajo, como negociar salario?</div>
-                <div class="thread-meta"><span class="author">Carlos Rivas</span><span class="dot">·</span><span>Hace 1 dia</span><span class="dot">·</span><span class="badge-cat bc-salarios">Salarios</span></div>
-                <div class="thread-preview">Que consejos me dan para negociar mejor una oferta?</div>
-                <div class="thread-footer"><span><i class="bi bi-chat-left-text"></i> 24 respuestas</span><span><i class="bi bi-hand-thumbs-up"></i> 57 votos</span></div>
-              </div>
-            </a>
-          </div>
-
-          <div class="col-lg-4">
-            <div class="sidebar-card">
-              <h6>Categorias</h6>
-              <ul class="cat-list">
-                <li><a href="#" class="active"><i class="bi bi-chat-square-check"></i> Entrevistas</a></li>
-                <li><a href="#"><i class="bi bi-file-earmark-person"></i> CV</a></li>
-                <li><a href="#"><i class="bi bi-code-slash"></i> Programacion</a></li>
-                <li><a href="#"><i class="bi bi-currency-dollar"></i> Salarios</a></li>
-                <li><a href="#"><i class="bi bi-lightbulb"></i> Consejos</a></li>
-              </ul>
-            </div>
-
-            <div class="sidebar-card mt-3">
-              <h6>Reglas del foro</h6>
-              <ul class="rules-list">
-                <li><i class="bi bi-check-circle-fill"></i> Se respetuoso</li>
-                <li><i class="bi bi-check-circle-fill"></i> No spam</li>
-                <li><i class="bi bi-check-circle-fill"></i> Comparte con valor</li>
-                <li><i class="bi bi-check-circle-fill"></i> Usa la categoria correcta</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
-
     <div id="perfilTab" class="tab-content" style="display:none;">
       <div class="row">
         <div class="col-lg-8 mx-auto">
@@ -357,4 +273,3 @@
 <script src="js/candidato.js"></script>
 </body>
 </html>
-

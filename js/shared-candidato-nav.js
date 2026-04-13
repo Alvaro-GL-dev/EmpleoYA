@@ -27,7 +27,7 @@
         buscar: "candidato-dashboard.html?tab=buscar",
         solicitudes: "candidato-dashboard.html?tab=solicitudes",
         recursos: "candidato-dashboard.html?tab=recursos",
-        foros: "candidato-dashboard.html?tab=foros",
+        foros: "foros.html",
         perfil: "perfil.html",
         cargarCv: "perfil.html"
       };

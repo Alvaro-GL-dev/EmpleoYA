@@ -280,8 +280,7 @@ function initTabs() {
   const contents = {
     buscar: document.getElementById("buscarTab"),
     solicitudes: document.getElementById("solicitudesTab"),
-    recursos: document.getElementById("recursosTab"),
-    foros: document.getElementById("forosTab")
+    recursos: document.getElementById("recursosTab")
   };
 
   const switchTab = (tabId) => {
@@ -322,6 +321,10 @@ function initTabs() {
   }
 
   const tabFromUrl = new URLSearchParams(window.location.search).get("tab");
+  if (tabFromUrl === "foros") {
+    window.location.href = "foros.html";
+    return;
+  }
   if (tabFromUrl && contents[tabFromUrl]) {
     switchTab(tabFromUrl);
   }
@@ -484,114 +487,6 @@ function setupResourcesFilters() {
   applyFilters();
 }
 
-// ======================== FILTROS FOROS ========================
-function setupForosFilters() {
-  const container = document.getElementById("forosTab");
-  if (!container) return;
-
-  const tabs = Array.from(container.querySelectorAll(".tabs-row .nav-pills .nav-link"));
-  const sidebarCategories = Array.from(container.querySelectorAll(".cat-list a"));
-  const searchInput = container.querySelector(".search-wrap input");
-  const threads = Array.from(container.querySelectorAll(".main-wrap .col-lg-8 .thread-card"));
-
-  if (!tabs.length || !searchInput || !threads.length) return;
-
-  const threadsCol = threads[0].parentElement;
-  const emptyState = document.createElement("div");
-  emptyState.className = "text-center py-5 text-muted";
-  emptyState.style.display = "none";
-  emptyState.innerHTML = '<i class="bi bi-search me-1"></i>No se encontraron publicaciones.';
-  threadsCol.appendChild(emptyState);
-
-  const mapLabelToCategory = (label) => {
-    const text = normalizeText(label);
-    if (text === "todos") return "todos";
-    if (text.includes("entrevista")) return "entrevistas";
-    if (text === "cv") return "cv";
-    if (text.includes("programacion")) return "programacion";
-    if (text.includes("salario")) return "salarios";
-    if (text.includes("consejo")) return "consejos";
-    return "todos";
-  };
-
-  const mapThreadToCategory = (thread) => {
-    const badge = thread.querySelector(".badge-cat");
-    if (!badge) return "todos";
-
-    const classes = Array.from(badge.classList);
-    if (classes.includes("bc-entrevistas")) return "entrevistas";
-    if (classes.includes("bc-cv")) return "cv";
-    if (classes.includes("bc-programacion")) return "programacion";
-    if (classes.includes("bc-salarios")) return "salarios";
-    if (classes.includes("bc-consejos")) return "consejos";
-    return mapLabelToCategory(badge.textContent);
-  };
-
-  threads.forEach((thread) => {
-    thread.dataset.category = mapThreadToCategory(thread);
-    thread.dataset.searchable = normalizeText(thread.textContent);
-  });
-
-  let activeCategory = mapLabelToCategory(tabs.find((tab) => tab.classList.contains("active"))?.textContent || "Todos");
-
-  const syncSidebarActive = () => {
-    sidebarCategories.forEach((link) => {
-      const linkCategory = mapLabelToCategory(link.textContent);
-      link.classList.toggle("active", linkCategory === activeCategory);
-    });
-  };
-
-  const syncTabsActive = () => {
-    const matchingTab = tabs.find((tab) => mapLabelToCategory(tab.textContent) === activeCategory);
-    tabs.forEach((tab) => tab.classList.remove("active"));
-    if (matchingTab) matchingTab.classList.add("active");
-    else tabs[0]?.classList.add("active");
-  };
-
-  const applyFilters = () => {
-    const query = normalizeText(searchInput.value);
-    let visible = 0;
-
-    threads.forEach((thread) => {
-      const matchesCategory = activeCategory === "todos" || thread.dataset.category === activeCategory;
-      const matchesQuery = !query || thread.dataset.searchable.includes(query);
-      const show = matchesCategory && matchesQuery;
-      thread.style.display = show ? "" : "none";
-      if (show) visible += 1;
-    });
-
-    emptyState.style.display = visible ? "none" : "";
-    syncSidebarActive();
-    syncTabsActive();
-  };
-
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", (event) => {
-      event.preventDefault();
-      activeCategory = mapLabelToCategory(tab.textContent);
-      applyFilters();
-    });
-  });
-
-  sidebarCategories.forEach((link) => {
-    link.addEventListener("click", (event) => {
-      event.preventDefault();
-      activeCategory = mapLabelToCategory(link.textContent);
-      applyFilters();
-    });
-  });
-
-  searchInput.addEventListener("input", applyFilters);
-  searchInput.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      applyFilters();
-    }
-  });
-
-  applyFilters();
-}
-
 // ======================== INICIALIZACION ========================
 document.addEventListener("DOMContentLoaded", () => {
   loadUserData();
@@ -601,7 +496,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setupProfileEditing();
   setupNavbarUpload();
   setupResourcesFilters();
-  setupForosFilters();
 
   document.getElementById("searchBtn")?.addEventListener("click", filterJobs);
   document.getElementById("searchKeyword")?.addEventListener("keyup", (e) => {
