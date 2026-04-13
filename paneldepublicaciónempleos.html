@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Publicación</title>
+    <link rel="stylesheet" href="css/moduloempresarial.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header d-flex justify-content-between align-items-center">
+    <div class="logo">Empleo<span>Ya</span></div>
+
+    <div class="d-flex gap-4">
+        <a>Buscar Empleos</a>
+        <a><strong>Mis Solicitudes</strong></a>
+        <a>Mensajes</a>
+        <a>Mi Perfil</a>
+    </div>
+
+   <button class="btn-primary" onclick="window.location.href='moduloempresarial.html'">
+    Regresar
+</button>
+</div>
+
+<!-- CONTENIDO -->
+<div class="container" style="padding:30px;">
+
+    <h2 style="text-align:center; margin-bottom:30px;">
+        Panel de Publicación de Empleos
+    </h2>
+
+    <div style="display:flex; gap:20px;">
+
+        <!-- IZQUIERDA -->
+        <div style="flex:2; display:flex; flex-direction:column; gap:20px;">
+
+            <!-- INFORMACION -->
+            <div class="panel">
+                <h4>Información del Puesto</h4>
+
+                <div style="display:flex; gap:15px; margin-top:15px;">
+                    <input type="text" placeholder="Título del empleo" style="flex:1;">
+                    <input type="text" placeholder="Empresa" style="flex:1;">
+                </div>
+
+                <div style="display:flex; gap:15px; margin-top:15px;">
+                    <select style="flex:1;">
+                        <option>Ubicación</option>
+                    </select>
+
+                    <select style="flex:1;">
+                        <option>Categoría</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- DETALLES -->
+            <div class="panel">
+                <h4>Detalles del Empleo</h4>
+
+                <div style="display:flex; gap:15px; margin-top:15px;">
+                    <select style="flex:1;">
+                        <option>Nivel de experiencia</option>
+                    </select>
+
+                    <select style="flex:1;">
+                        <option>Jornada laboral</option>
+                    </select>
+                </div>
+
+                <div style="margin-top:15px;">
+                    <select style="width:100%;">
+                        <option>Rango salarial</option>
+                    </select>
+                </div>
+
+                <div style="margin-top:15px;">
+                    <textarea placeholder="Descripción del puesto" rows="4" style="width:100%;"></textarea>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- DERECHA -->
+        <div style="flex:1; display:flex; flex-direction:column; gap:20px;">
+
+            <!-- REQUISITOS -->
+            <div class="panel">
+                <h4>Requisitos</h4>
+
+                <input type="text" placeholder="Habilidades necesarias" style="margin-top:10px;">
+
+                <select style="margin-top:10px;">
+                    <option>Años de experiencia</option>
+                </select>
+
+                <select style="margin-top:10px;">
+                    <option>Educación requerida</option>
+                </select>
+            </div>
+
+            <!-- BOTONES -->
+            <div class="panel" style="display:flex; justify-content:space-between;">
+                <button class="btn-ir">Guardar Borrador</button>
+                <button class="btn-primary">Publicar Empleo</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

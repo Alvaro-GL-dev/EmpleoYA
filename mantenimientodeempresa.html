@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mantenimiento de Empresa</title>
+    <link rel="stylesheet" href="css/moduloempresarial.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <div class="logo">Empleo<span>Ya</span></div>
+
+    <div class="nav">
+        <a>Buscar Empleos</a>
+        <a><strong>Mis Solicitudes</strong></a>
+        <a>Mensajes</a>
+        <a>Mi Perfil</a>
+    </div>
+
+    <button class="btn-primary" onclick="window.location.href='moduloempresarial.html'">
+    Regresar
+</button>
+</div>
+
+<!-- CONTENIDO -->
+<div class="container" style="padding:30px;">
+
+    <h2>Mantenimiento de Empresa</h2>
+
+    <!-- FILTROS -->
+    <div class="panel" style="margin-bottom:20px;">
+        <div class="row">
+
+            <input type="text" placeholder="🔍 Buscar ofertas de trabajo..." style="flex:2;">
+
+            <select>
+                <option>Todas las Empresas</option>
+            </select>
+
+            <select>
+                <option>Estado</option>
+            </select>
+
+            <select>
+                <option>Todos los Tipos</option>
+            </select>
+
+            <button class="btn-primary">Aplicar Filtros</button>
+        </div>
+
+        <!-- TAGS -->
+        <div style="margin-top:15px; display:flex; gap:10px; flex-wrap:wrap;">
+            <span class="tag active">Todas</span>
+            <span class="tag">Activas</span>
+            <span class="tag">Finalizadas</span>
+            <span class="tag">Rechazadas</span>
+            <span class="tag">Programadas</span>
+        </div>
+    </div>
+
+    <!-- TABLA -->
+    <div class="panel">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Título Vacante</th>
+                    <th>Empresa</th>
+                    <th>Fecha</th>
+                    <th>Estado</th>
+                    <th>Tipo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>
+                        <strong>Desarrollador Backend</strong><br>
+                        <small>Publicadas: 250 - Programadas: 100</small>
+                    </td>
+                    <td>Google</td>
+                    <td>22/04/2024</td>
+                    <td><span class="estado activo">Activo</span></td>
+                    <td>Onsite</td>
+                    <td>
+                        <button class="btn-table">Ver</button>
+                        <button class="btn-table edit">Editar</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <strong>Diseñador UX/UI Senior</strong><br>
+                        <small>Vencidas: 80 - Cerradas: 40</small>
+                    </td>
+                    <td>Microsoft</td>
+                    <td>21/04/2024</td>
+                    <td><span class="estado verificar">Programada</span></td>
+                    <td>Híbrido</td>
+                    <td>
+                        <button class="btn-table">Ver</button>
+                        <button class="btn-table edit">Editar</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <strong>Desarrollador Backend</strong><br>
+                        <small>Motivo: Revisar contenido</small>
+                    </td>
+                    <td>Facebook</td>
+                    <td>15/04/2024</td>
+                    <td><span class="estado bloqueado">Finalizada</span></td>
+                    <td>Remoto</td>
+                    <td>
+                        <button class="btn-table">Ver</button>
+                        <button class="btn-table edit">Editar</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <strong>Agente de Ventas</strong><br>
+                        <small>Remoto - Laptop</small>
+                    </td>
+                    <td>Amazon</td>
+                    <td>14/04/2024</td>
+                    <td><span class="estado reportado">Rechazada</span></td>
+                    <td>Remoto</td>
+                    <td>
+                        <button class="btn-table">Ver</button>
+                        <button class="btn-table edit">Editar</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <strong>Ingeniero DevOps</strong><br>
+                        <small>Publicadas: 250 - Programadas: 100</small>
+                    </td>
+                    <td>OpenAI</td>
+                    <td>14/04/2024</td>
+                    <td><span class="estado activo">Activo</span></td>
+                    <td>Remoto</td>
+                    <td>
+                        <button class="btn-table">Ver</button>
+                        <button class="btn-table edit">Editar</button>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+
+        <!-- PAGINACION -->
+        <div style="margin-top:15px; display:flex; justify-content:space-between; align-items:center;">
+            <small>Mostrando 1-5 de 150 ofertas</small>
+
+            <div class="pagination">
+                <button class="page active">1</button>
+                <button class="page">2</button>
+                <button class="page">3</button>
+                <button class="page">4</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
