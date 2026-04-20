@@ -3,219 +3,131 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EmpleoYa | Perfil Profesional</title>
+  <title>AlexTech | Panel de Control de Empresa</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/stylePerfil.css">
-  <style>body { visibility: hidden; } /* Evita parpadeo antes de que el JS decida el rol */</style>
+  <style>body { visibility: hidden; }</style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-lg bg-white border-bottom py-3 sticky-top">
+<nav class="navbar navbar-expand-lg bg-white border-bottom py-3 sticky-top shadow-sm">
   <div class="container">
     <a class="navbar-brand fw-bold text-primary fs-3" href="index.html">Empleo<span class="text-dark">Ya</span></a>
     <div class="ms-auto d-flex align-items-center gap-3">
-      <a href="index.html" class="btn btn-light rounded-pill px-4 fw-medium">Inicio</a>
-      <button class="btn btn-danger rounded-pill px-4 fw-medium" id="btnLogout"><i class="bi bi-box-arrow-right me-2"></i>Salir</button>
+      <span class="text-muted d-none d-md-block small fw-medium">
+        Panel de Administración: <strong class="text-dark" id="navRoleDisplay">Empresa</strong>
+      </span>
+      <button class="btn btn-outline-danger rounded-pill px-4 btn-sm fw-bold shadow-sm" id="btnLogout">Cerrar Sesión</button>
     </div>
   </div>
 </nav>
 
 <main class="container py-5">
-  
-  <div id="userView" style="display: none;">
-    <div class="row g-4">
-      <div class="col-lg-8">
-        <div class="card card-custom p-4 mb-4">
-          <div class="d-flex justify-content-between align-items-start flex-wrap gap-3">
-            <div id="modoLecturaInfo" class="d-flex align-items-center gap-4">
-              <div class="avatar-circle" id="txtAvatar">JP</div>
-              <div>
-                <h2 class="fw-bold mb-1" id="txtNombreCabecera">Juan Pérez</h2>
-                <p class="text-primary fw-semibold mb-2" id="txtTituloCabecera">Desarrollador Full Stack (React + Node)</p>
-                <div class="d-flex flex-wrap gap-3 text-muted small">
-                  <span><i class="bi bi-geo-alt me-1"></i> <span id="txtUbicacionCabecera">San Salvador, El Salvador</span></span>
-                  <span><i class="bi bi-envelope me-1"></i> <span id="txtCorreoCabecera">juan.perez@empleoya.com</span></span>
-                  <span><i class="bi bi-telephone me-1"></i> <span id="txtTelefonoCabecera">(503) 7012-3456</span></span>
-                </div>
-              </div>
-            </div>
-            <button class="btn btn-sm btn-outline-primary rounded-pill px-3" id="btnEditarInfo"><i class="bi bi-pencil me-1"></i>Editar Perfil</button>
-          </div>
-
-          <div id="modoEdicionInfo" style="display: none;" class="mt-4 bg-light p-4 rounded-4 border">
-            <h6 class="fw-bold mb-3">Actualizar Información de Contacto</h6>
-            <div class="row g-3">
-              <div class="col-md-6"><label class="small fw-bold text-muted">Nombre</label><input type="text" id="inputNombreCabecera" class="form-control rounded-pill"></div>
-              <div class="col-md-6"><label class="small fw-bold text-muted">Título</label><input type="text" id="inputTituloCabecera" class="form-control rounded-pill"></div>
-              <div class="col-md-4"><label class="small fw-bold text-muted">Ubicación</label><input type="text" id="inputUbicacionCabecera" class="form-control rounded-pill"></div>
-              <div class="col-md-4"><label class="small fw-bold text-muted">Correo</label><input type="email" id="inputCorreoCabecera" class="form-control rounded-pill"></div>
-              <div class="col-md-4"><label class="small fw-bold text-muted">Teléfono</label><input type="text" id="inputTelefonoCabecera" class="form-control rounded-pill"></div>
-            </div>
-            <div class="d-flex justify-content-end gap-2 mt-4">
-              <button class="btn btn-sm btn-light rounded-pill px-4" id="btnCancelarInfo">Cancelar</button>
-              <button class="btn btn-sm btn-primary rounded-pill px-4" id="btnGuardarInfo">Guardar Cambios</button>
-            </div>
-          </div>
-
-          <hr class="my-4">
-          <div class="row text-center g-3">
-            <div class="col-4 border-end">
-              <div class="fw-bold fs-4 text-primary">24</div>
-              <div class="small text-muted"><i class="bi bi-send me-1"></i>Solicitudes</div>
-            </div>
-            <div class="col-4 border-end">
-              <div class="fw-bold fs-4 text-primary" id="contadorAlertasVista">3</div>
-              <div class="small text-muted"><i class="bi bi-bell me-1"></i>Alertas</div>
-            </div>
-            <div class="col-4">
-              <div class="fw-bold fs-4 text-warning">4.9</div>
-              <div class="small text-muted"><i class="bi bi-star-fill me-1"></i>Valoración</div>
-            </div>
-          </div>
+  <div id="companyDashboard" style="display: none;">
+    
+    <div class="row mb-5 align-items-end">
+        <div class="col-md-8">
+            <h2 class="fw-800 text-dark mb-1">¡Hola de nuevo, <span class="text-primary" id="dashboardTitle">Cargando...</span>!</h2>
+            <p class="text-muted mb-0">Gestiona tus vacantes y analiza el flujo de talento en tiempo real.</p>
         </div>
-
-        <div class="card card-custom p-4">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="fw-bold mb-0"><i class="bi bi-briefcase me-2 text-primary"></i>Perfil Profesional</h5>
-            <button class="btn btn-sm btn-light rounded-pill border" id="btnEditarPerfil"><i class="bi bi-pen"></i></button>
-          </div>
-          <div id="modoLecturaPerfil">
-            <div class="mb-4">
-              <p class="fw-bold text-muted small text-uppercase mb-2">Sobre mí</p>
-              <p class="text-secondary" id="txtPresentacion">Desarrollador apasionado por el frontend con experiencia en la creación de interfaces modernas. Especialista en React y Node.js con enfoque en escalabilidad.</p>
-            </div>
-            <div class="row g-4">
-              <div class="col-md-6">
-                <p class="fw-bold text-muted small text-uppercase mb-2">Experiencia Clave</p>
-                <p class="text-secondary small" id="txtExperiencia" style="white-space: pre-line;">- Desarrollador Full Stack en TechSolutions SV&#10;- Diseño de UI en CreativaStudio&#10;- Consultor SAP en IBM</p>
-              </div>
-              <div class="col-md-6">
-                <p class="fw-bold text-muted small text-uppercase mb-2">Educación</p>
-                <p class="text-secondary small" id="txtEducacion" style="white-space: pre-line;">- Ingeniería en Sistemas Informáticos - UES&#10;- Certificación AWS Cloud Architect&#10;- Bootcamp Full Stack Desarrollo Web</p>
-              </div>
-            </div>
-          </div>
-
-          <div id="modoEdicionPerfil" style="display: none;" class="bg-light p-4 rounded-4 border">
-            <div class="mb-3"><label class="small fw-bold text-muted">Presentación</label><textarea id="inputPresentacion" class="form-control" rows="3"></textarea></div>
-            <div class="row g-3">
-              <div class="col-md-6"><label class="small fw-bold text-muted">Experiencia</label><textarea id="inputExperiencia" class="form-control" rows="5"></textarea></div>
-              <div class="col-md-6"><label class="small fw-bold text-muted">Educación</label><textarea id="inputEducacion" class="form-control" rows="5"></textarea></div>
-            </div>
-            <div class="d-flex justify-content-end gap-2 mt-4">
-              <button class="btn btn-sm btn-light rounded-pill px-4" id="btnCancelarEdicion">Cancelar</button>
-              <button class="btn btn-sm btn-primary rounded-pill px-4" id="btnGuardarEdicion">Actualizar Perfil</button>
-            </div>
-          </div>
-
-          <hr class="my-4">
-          <div class="fw-bold text-muted small text-uppercase mb-3">Habilidades & Herramientas</div>
-          <div class="d-flex flex-wrap gap-2">
-            <span class="badge-skill">React.js</span><span class="badge-skill">Node.js</span><span class="badge-skill">Java</span>
-            <span class="badge-skill">Spring Boot</span><span class="badge-skill">MySQL Workbench</span><span class="badge-skill">Bootstrap 5</span>
-          </div>
+        <div class="col-md-4 text-md-end mt-4 mt-md-0">
+            <a href="empresa.html" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm fw-bold">
+                <i class="bi bi-plus-lg me-2"></i>Nueva Vacante
+            </a>
         </div>
-      </div>
-
-      <div class="col-lg-4">
-        <div class="card card-custom p-4 mb-4">
-          <h5 class="fw-bold mb-4"><i class="bi bi-graph-up-arrow me-2 text-primary"></i>Actividad Reciente</h5>
-          <div class="row text-center">
-            <div class="col-6 border-end">
-              <div class="stat-number">1,240</div>
-              <div class="text-muted small">Vistas</div>
-            </div>
-            <div class="col-6">
-              <div class="stat-number">15</div>
-              <div class="text-muted small">Intervenciones</div>
-            </div>
-          </div>
-          <div class="mt-4">
-            <button class="btn btn-primary w-100 rounded-pill py-2"><i class="bi bi-cloud-arrow-up me-2"></i>Actualizar CV (PDF)</button>
-          </div>
-        </div>
-
-        <div class="card card-custom p-4">
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="fw-bold mb-0"><i class="bi bi-bell-fill me-2 text-primary"></i>Alertas</h5>
-            <button class="btn btn-sm btn-light rounded-pill border" id="btnConfigurarAlertas"><i class="bi bi-gear"></i></button>
-          </div>
-          <div id="contenedorDeAlertas">
-            </div>
-          <div id="modoEdicionAlertas" style="display: none;" class="mt-4 pt-3 border-top">
-            <div class="input-group input-group-sm mb-2">
-              <input type="text" class="form-control" id="inputNuevaAlerta" placeholder="Puesto...">
-              <select class="form-select" id="selectTipoAlerta" style="max-width: 100px;"><option value="Remoto">Remoto</option><option value="Local">Local</option></select>
-              <button class="btn btn-primary" id="btnAgregarAlerta"><i class="bi bi-plus"></i></button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <div id="companyView" style="display: none;">
-    <div class="row g-4 mb-4">
-      <div class="col-md-4"><div class="card card-custom text-center p-4"><div class="stat-number" id="activeJobsCount">3</div><div class="text-muted fw-bold">Empleos Activos</div></div></div>
-      <div class="col-md-4"><div class="card card-custom text-center p-4"><div class="stat-number">42</div><div class="text-muted fw-bold">Nuevas Postulaciones</div></div></div>
-      <div class="col-md-4"><div class="card card-custom text-center p-4"><div class="stat-number">89%</div><div class="text-muted fw-bold">Tasa de Respuesta</div></div></div>
+    <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <div class="card-stat p-4">
+          <div class="d-flex justify-content-between">
+              <div>
+                <div class="stat-number" id="activeJobsCount">0</div>
+                <div class="stat-label">Vacantes Activas</div>
+              </div>
+              <div class="stat-icon bg-primary-soft"><i class="bi bi-briefcase"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-stat p-4">
+          <div class="d-flex justify-content-between">
+              <div>
+                <div class="stat-number" id="totalAppsCount">0</div>
+                <div class="stat-label">Postulaciones Totales</div>
+              </div>
+              <div class="stat-icon bg-info-soft"><i class="bi bi-people"></i></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card-stat p-4">
+          <div class="d-flex justify-content-between">
+              <div>
+                <div class="stat-number text-success">100%</div>
+                <div class="stat-label">Verificación Empresa</div>
+              </div>
+              <div class="stat-icon bg-success-soft"><i class="bi bi-shield-check"></i></div>
+          </div>
+        </div>
+      </div>
     </div>
     
     <div class="row g-4">
+      
       <div class="col-lg-5">
-        <div class="card card-custom p-4 mb-4">
-          <h5 class="fw-bold mb-4"><i class="bi bi-plus-circle-fill me-2 text-primary"></i>Publicar Vacante</h5>
-          <div class="mb-3"><label class="form-label small fw-bold">Título del puesto</label><input type="text" class="form-control rounded-pill" id="jobTitle" placeholder="Ej: Backend Dev"></div>
-          <div class="mb-3"><label class="form-label small fw-bold">Ubicación</label><input type="text" class="form-control rounded-pill" id="jobLocation" placeholder="Ej: San Salvador"></div>
-          <div class="mb-3"><label class="form-label small fw-bold">Descripción breve</label><textarea class="form-control" id="jobDesc" rows="3" placeholder="Requisitos básicos..."></textarea></div>
-          <button class="btn btn-primary w-100 rounded-pill py-2" id="publishJobBtn">Publicar ahora</button>
-        </div>
-
-        <div class="card card-custom p-4">
-          <h5 class="fw-bold mb-4"><i class="bi bi-people-fill me-2 text-primary"></i>Candidatos Destacados</h5>
-          <div class="list-group list-group-flush" id="listaCandidatos">
+        <div class="card card-custom p-4 border-0 h-100 shadow-sm">
+          <h5 class="fw-bold mb-4 d-flex align-items-center">
+              <span class="icon-box bg-primary-soft text-primary me-2"><i class="bi bi-building"></i></span>
+              Identidad de Marca
+          </h5>
+          <form id="formPerfilEmpresaDashboard">
+            <div class="mb-4">
+              <label class="form-label-custom">Nombre Comercial / Razón Social *</label>
+              <input type="text" class="form-control-custom" id="compNombre" required>
             </div>
+            <div class="mb-4">
+              <label class="form-label-custom">Sitio Web Corporativo</label>
+              <input type="url" class="form-control-custom" id="compWeb" placeholder="https://alextech.com.sv">
+            </div>
+            <div class="mb-4">
+              <label class="form-label-custom">Ubicación Sede Central *</label>
+              <input type="text" class="form-control-custom" id="compUbicacion" placeholder="Ej: San Salvador" required>
+            </div>
+            <div class="mb-4">
+              <label class="form-label-custom">Acerca de la Empresa</label>
+              <textarea class="form-control-custom" id="compDesc" rows="4" placeholder="Describe brevemente la misión y visión..."></textarea>
+            </div>
+            <button class="btn btn-dark w-100 rounded-pill py-3 fw-bold mt-2 shadow-sm" type="submit">Guardar Datos de Empresa</button>
+          </form>
         </div>
       </div>
 
       <div class="col-lg-7">
-        <div class="card card-custom p-4 h-100">
-          <h5 class="fw-bold mb-4"><i class="bi bi-list-task me-2 text-primary"></i>Gestión de Vacantes</h5>
+        <div class="card card-custom p-4 h-100 border-0 shadow-sm">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h5 class="fw-bold mb-0">Tus Vacantes Recientes</h5>
+            <a href="empresa.html" class="text-primary small fw-bold text-decoration-none">Gestionar todas <i class="bi bi-arrow-right"></i></a>
+          </div>
           <div id="jobsListContainer">
-            </div>
+              <div class="text-center py-5"><div class="spinner-border text-primary spinner-border-sm"></div></div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <div id="adminView" style="display: none;">
-    <div class="row g-4 mb-5">
-      <div class="col-md-3"><div class="card card-custom text-center p-4"><div class="stat-number">1,284</div><div class="text-muted">Usuarios Registrados</div></div></div>
-      <div class="col-md-3"><div class="card card-custom text-center p-4"><div class="stat-number">156</div><div class="text-muted">Empresas Activas</div></div></div>
-      <div class="col-md-3"><div class="card card-custom text-center p-4"><div class="stat-number" id="adminActiveJobsCount">312</div><div class="text-muted">Empleos Totales</div></div></div>
-      <div class="col-md-3"><div class="card card-custom text-center p-4"><div class="stat-number text-danger" id="adminReportCount">4</div><div class="text-muted">Alertas del Sistema</div></div></div>
-    </div>
-    
-    <div class="card card-custom p-0 overflow-hidden mb-4">
-      <div class="card-header bg-white p-4 border-0"><h5 class="fw-bold mb-0"><i class="bi bi-shield-lock me-2 text-primary"></i>Panel de Moderación de Usuarios</h5></div>
-      <div class="table-responsive">
-        <table class="table table-hover align-middle mb-0">
-          <thead class="table-light"><tr><th class="ps-4">Usuario</th><th>Email</th><th>Rol</th><th>Estado</th><th class="text-end pe-4">Acción</th></tr></thead>
-          <tbody id="adminUserTable">
-            </tbody>
-        </table>
-      </div>
     </div>
   </div>
 </main>
 
-<footer class="text-center text-muted py-5 mt-5">
-  <div class="container"><hr class="mb-4">EmpleoYa · Gestión de Talento El Salvador 2026 ·</div>
+<div class="toast-notification" id="liveToast"></div>
+
+<footer class="py-5 mt-5 border-top">
+  <div class="container text-center"><p class="text-muted small">© 2026 EmpleoYA · Diseñado por Ernesto Alexander para AlexTech</p></div>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="js/perfil.js"></script>
+<script type="module" src="js/perfil.js"></script>
 </body>
 </html>
