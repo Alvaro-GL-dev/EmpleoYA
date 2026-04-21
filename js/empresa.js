@@ -139,23 +139,40 @@ window.verPostulantes = async (vacanteId, titulo) => {
         if (lista.length === 0) { container.innerHTML = '<p class="text-center w-100 py-5 text-muted">Sin candidatos postulados aún.</p>'; return; }
 
         container.innerHTML = lista.map(p => `
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="candidate-card p-4 shadow-sm border bg-white h-100">
-                <div class="d-flex align-items-center gap-3 mb-3">
-                    <div class="avatar-sm bg-primary bg-opacity-10 text-primary rounded-circle"><i class="bi bi-person-fill"></i></div>
-                    <div><h6 class="fw-bold mb-0">${p.nombres} ${p.apellidos}</h6><small class="text-muted">${p.titular_profesional || 'Postulante'}</small></div>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mb-3"><small class="fw-bold text-muted">Fase actual:</small><span class="badge bg-${colores[p.etapa_actual]}">${p.etapa_actual.replace('_', ' ')}</span></div>
-                <div class="pipeline-grid mb-3">
-                    ${etapas.map(et => {
-                        const active = p.etapa_actual === et;
-                        return `<button class="btn btn-pipeline ${active ? 'btn-' + colores[et] : 'btn-outline-' + colores[et]}" 
-                                onclick="window.actualizarEstado('${p.postulacion_id}', '${et}', '${vacanteId}', '${titulo}')">${et.replace('_',' ')}</button>`;
-                    }).join('')}
-                </div>
-                <div class="pt-3 border-top"><a href="${p.url_curriculum_pdf || '#'}" target="_blank" class="small fw-bold text-decoration-none">Ver CV <i class="bi bi-box-arrow-up-right me-1"></i></a></div>
-              </div>
-            </div>`).join('');
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="candidate-card p-4 shadow-sm border bg-white h-100" data-candidato-id="${p.candidato_id}" style="cursor: pointer;">
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="avatar-sm bg-primary bg-opacity-10 text-primary rounded-circle"><i class="bi bi-person-fill"></i></div>
+            <div><h6 class="fw-bold mb-0">${p.nombres} ${p.apellidos}</h6><small class="text-muted">${p.titular_profesional || 'Postulante'}</small></div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-3"><small class="fw-bold text-muted">Fase actual:</small><span class="badge bg-${colores[p.etapa_actual]}">${p.etapa_actual.replace('_', ' ')}</span></div>
+        <div class="pipeline-grid mb-3">
+            ${etapas.map(et => {
+                const active = p.etapa_actual === et;
+                return `<button class="btn btn-pipeline ${active ? 'btn-' + colores[et] : 'btn-outline-' + colores[et]}" 
+                        onclick="window.actualizarEstado('${p.postulacion_id}', '${et}', '${vacanteId}', '${titulo}')">${et.replace('_',' ')}</button>`;
+            }).join('')}
+        </div>
+        <div class="pt-3 border-top"><a href="${p.url_curriculum_pdf || '#'}" target="_blank" class="small fw-bold text-decoration-none">Ver CV <i class="bi bi-box-arrow-up-right me-1"></i></a></div>
+      </div>
+    </div>`).join('');
+
+
+container.addEventListener('click', (e) => {
+    // Si el clic fue en un botón o enlace, no abrir el modal
+    if (e.target.closest('button') || e.target.closest('a')) {
+        return;
+    }
+    
+    
+    const card = e.target.closest('.candidate-card');
+    if (card) {
+        const candidatoId = card.getAttribute('data-candidato-id');
+        if (candidatoId) {
+            verPerfilCandidato(candidatoId);
+        }
+    }
+});
     } catch (e) { container.innerHTML = "Error al cargar candidatos."; }
 };
 
@@ -232,3 +249,73 @@ function filtrarVacantesLocal(e) {
         card.style.display = titulo.includes(texto) ? 'block' : 'none';
     });
 }
+
+// Función para cargar y mostrar el perfil 
+async function verPerfilCandidato(candidatoId) {
+    try {
+        // Obtener datos del candidato
+        const res = await fetch(`${API_URL}/candidatos/${candidatoId}`, {
+            headers: getHeaders()
+        });
+        
+        if (!res.ok) {
+            showToast("No se pudo cargar el perfil del candidato", "danger");
+            return;
+        }
+        
+        const data = await res.json();
+        
+        // Llenar datos básicos
+        document.getElementById('perfilCandidatoNombre').innerText = `${data.nombres} ${data.apellidos}`;
+        document.getElementById('perfilCandidatoTitular').innerText = data.titular_profesional || 'Sin título profesional';
+        document.getElementById('perfilCandidatoResumen').innerText = data.resumen_biografico || 'Este candidato aún no ha añadido un resumen profesional.';
+        document.getElementById('perfilCandidatoTelefono').innerText = data.telefono_contacto || 'No registrado';
+        document.getElementById('perfilCandidatoCorreo').innerText = data.usuario?.correo_electronico || 'No disponible';
+        document.getElementById('perfilCandidatoNacimiento').innerText = data.fecha_nacimiento 
+            ? new Date(data.fecha_nacimiento).toLocaleDateString() 
+            : 'No especificada';
+        document.getElementById('perfilCandidatoVistas').innerText = data.vistas_perfil || 0;
+        
+        // Avatar con iniciales
+        const avatarDiv = document.getElementById('perfilCandidatoAvatar');
+        avatarDiv.innerText = `${data.nombres?.[0] || ''}${data.apellidos?.[0] || ''}`;
+        
+        // Habilidades
+        const habilidadesContainer = document.getElementById('perfilCandidatoHabilidades');
+        if (data.habilidades_tecnicas && data.habilidades_tecnicas.length > 0) {
+            habilidadesContainer.innerHTML = data.habilidades_tecnicas.map(h => 
+                `<span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">${h}</span>`
+            ).join('');
+        } else {
+            habilidadesContainer.innerHTML = '<span class="text-muted small">No ha especificado habilidades</span>';
+        }
+        
+        // CV
+        const btnCV = document.getElementById('btnVerCVCompleto');
+        if (data.url_curriculum_pdf) {
+            btnCV.href = data.url_curriculum_pdf;
+            btnCV.classList.remove('disabled');
+        } else {
+            btnCV.href = '#';
+            btnCV.classList.add('disabled');
+            btnCV.setAttribute('aria-disabled', 'true');
+        }
+        
+        // Registrar vista del perfil (para estadísticas)
+        fetch(`${API_URL}/candidatos/${candidatoId}/vista`, {
+            method: 'POST',
+            headers: getHeaders()
+        }).catch(err => console.warn("No se pudo registrar la vista:", err));
+        
+        // Mostrar modal
+        const modal = new bootstrap.Modal(document.getElementById('modalPerfilCandidato'));
+        modal.show();
+        
+    } catch (error) {
+        console.error("Error cargando perfil:", error);
+        showToast("Error de conexión al cargar el perfil", "danger");
+    }
+}
+
+// Hacer la función accesible globalmente para el onclick inline (aunque usaremos delegación)
+window.verPerfilCandidato = verPerfilCandidato;
