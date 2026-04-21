@@ -165,13 +165,18 @@
         <div class="card-pro p-4 p-md-5 bg-white shadow-sm rounded-5 border-0">
           <form id="formPerfilCandidatoCompleto">
             <h6 class="fw-bold text-primary mb-4 pb-2 border-bottom">Información General</h6>
-            <div class="row g-4">
-              <div class="col-md-6"><label class="label-saas">Nombres *</label><input type="text" class="form-control bg-light border-0 rounded-pill px-3 py-2" id="cNombres" required></div>
-              <div class="col-md-6"><label class="label-saas">Apellidos *</label><input type="text" class="form-control bg-light border-0 rounded-pill px-3 py-2" id="cApellidos" required></div>
-              <div class="col-12"><label class="label-saas">Titular Profesional</label><input type="text" class="form-control bg-light border-0 rounded-pill px-3 py-2" id="cProfesion"></div>
-              <div class="col-12"><label class="label-saas">Habilidades (Comas)</label><input type="text" class="form-control bg-light border-0 rounded-pill px-3 py-2" id="cHabilidades"></div>
-              <div class="col-12"><label class="label-saas">Resumen Biográfico</label><textarea class="form-control bg-light border-0 rounded-4 p-3" id="cResumen" rows="4"></textarea></div>
-            </div>
+              <div class="row g-4">
+                <div class="col-md-6"><label class="label-saas">Nombres *</label><input type="text" class="form-control bg-light border-0 rounded-pill px-3 py-2" id="cNombres" required></div>
+                <div class="col-md-6"><label class="label-saas">Apellidos *</label><input type="text" class="form-control bg-light border-0 rounded-pill px-3 py-2" id="cApellidos" required></div>
+                
+                <div class="col-md-6"><label class="label-saas">Teléfono</label><input type="tel" class="form-control bg-light border-0 rounded-pill px-3 py-2" id="cTelefono" placeholder="+503 0000 0000"></div>
+                <div class="col-md-6"><label class="label-saas">Fecha de Nacimiento</label><input type="date" class="form-control bg-light border-0 rounded-pill px-3 py-2" id="cNacimiento"></div>
+                <div class="col-12"><label class="label-saas">Correo Electrónico (Solo Lectura)</label><input type="email" class="form-control bg-light border-0 rounded-pill px-3 py-2 text-muted" id="cEmail" disabled readonly title="El correo está vinculado a tu cuenta principal"></div>
+                
+                <div class="col-12"><label class="label-saas">Titular Profesional</label><input type="text" class="form-control bg-light border-0 rounded-pill px-3 py-2" id="cProfesion" placeholder="Ej. Desarrollador Fullstack"></div>
+                <div class="col-12"><label class="label-saas">Habilidades (Separadas por comas)</label><input type="text" class="form-control bg-light border-0 rounded-pill px-3 py-2" id="cHabilidades"></div>
+                <div class="col-12"><label class="label-saas">Resumen Biográfico</label><textarea class="form-control bg-light border-0 rounded-4 p-3" id="cResumen" rows="4"></textarea></div>
+              </div>
             <div class="mt-5 text-end"><button type="submit" class="btn btn-primary rounded-pill px-5 py-3 fw-bold shadow-sm">Guardar Cambios</button></div>
           </form>
         </div>

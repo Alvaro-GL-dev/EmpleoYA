@@ -28,11 +28,11 @@ async function cargarDatosEmpresa() {
         const res = await fetch(`${API_URL}/empresas/mi-empresa`, { headers: getHeaders() });
         const data = await res.json();
         if (res.ok) {
-            // Llenar inputs
-            document.getElementById('compNombre').value = data.nombre_comercial || '';
+            // Llenar inputs usando los nombres exactos de tu base de datos
+            document.getElementById('compNombre').value = data.nombre_comercial || data.razon_social || '';
             document.getElementById('compWeb').value = data.sitio_web || '';
-            document.getElementById('compUbicacion').value = data.ubicacion || '';
-            document.getElementById('compDesc').value = data.descripcion || '';
+            document.getElementById('compUbicacion').value = data.ubicacion_sede || '';
+            document.getElementById('compDesc').value = data.descripcion_empresa || '';
             
             const name = data.nombre_comercial || data.razon_social || 'AlexTech';
             document.getElementById('dashboardTitle').innerText = name;
@@ -78,7 +78,7 @@ async function actualizarPerfilEmpresa(e) {
 
     const payload = {
         razon_social: document.getElementById('compNombre').value,
-        nombre_comercial: document.getElementById('compNombre').value, // o un campo separado si lo tienes
+        nombre_comercial: document.getElementById('compNombre').value,
         sitio_web: document.getElementById('compWeb').value,
         ubicacion_sede: document.getElementById('compUbicacion').value,
         descripcion_empresa: document.getElementById('compDesc').value,
@@ -92,7 +92,7 @@ async function actualizarPerfilEmpresa(e) {
         });
 
         if (res.ok) {
-            showToast("¡Datos de AlexTech actualizados!", "success");
+            showToast("¡Datos de actualizados!", "success");
             document.getElementById('dashboardTitle').innerText = payload.razon_social;
         } else {
             const errorData = await res.json();

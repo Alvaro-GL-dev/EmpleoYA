@@ -69,7 +69,7 @@ async function cargarVacantesDisponibles() {
                     <span class="text-success fw-bold small">${job.rango_salarial_max ? '$'+job.rango_salarial_max : 'A convenir'}</span>
                 </div>
                 <h5 class="fw-bold text-dark mt-2">${job.titulo_puesto}</h5>
-                <div class="small text-muted mb-2"><i class="bi bi-building me-1"></i> ${job.empresa_nombre || 'Empresa Confidencial'}</div>
+                    <div class="small text-muted mb-2"><i class="bi bi-building me-1"></i> ${job.empresa_nombre || job.nombre_comercial || job.razon_social || 'Empresa Confidencial'}</div>
                 <p class="text-muted small flex-grow-1">${job.descripcion_puesto.substring(0, 90)}...</p>
                 <div class="mt-auto pt-3 border-top">
                     <button class="btn btn-primary rounded-pill w-100 fw-bold btn-postularse" data-id="${job.id}">
@@ -260,7 +260,15 @@ async function cargarPerfilCandidato() {
         document.getElementById('cProfesion').value = data.titular_profesional || '';
         document.getElementById('cHabilidades').value = data.habilidades_tecnicas ? data.habilidades_tecnicas.join(', ') : '';
         document.getElementById('cResumen').value = data.resumen_biografico || '';
-        
+        document.getElementById('cTelefono').value = data.telefono_contacto || '';
+        document.getElementById('cEmail').value = data.correo_electronico || data.usuario?.correo_electronico || '';
+
+        if(data.fecha_nacimiento) {
+            document.getElementById('cNacimiento').value = new Date(data.fecha_nacimiento).toISOString().split('T')[0];
+        } else {
+            document.getElementById('cNacimiento').value = '';
+        }
+                
     } catch (e) { 
         console.error("Error al cargar perfil:", e); 
     }
@@ -277,7 +285,9 @@ async function guardarPerfilCandidato(e) {
         apellidos: document.getElementById('cApellidos').value,
         titular_profesional: document.getElementById('cProfesion').value,
         resumen_biografico: document.getElementById('cResumen').value,
-        habilidades_tecnicas: habilidadesArray
+        habilidades_tecnicas: habilidadesArray,
+        telefono_contacto: document.getElementById('cTelefono').value,
+        fecha_nacimiento: document.getElementById('cNacimiento').value || null
     };
 
     try {
