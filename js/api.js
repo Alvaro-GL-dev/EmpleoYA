@@ -1,4 +1,3 @@
-// js/api.js
 export const API_URL = 'http://localhost:3000/api';
 
 export const getHeaders = () => {
@@ -15,7 +14,6 @@ export const logout = () => {
     window.location.href = 'index.html';
 };
 
-// Función global para Toasts
 export const showToast = (message, type = "success") => {
     let toastContainer = document.querySelector(".toast-notification") || document.getElementById("liveToast");
     if (!toastContainer) return alert(message);

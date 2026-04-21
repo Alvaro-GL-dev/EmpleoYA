@@ -1,8 +1,5 @@
-// js/registro.js
-// 1. Agregamos "logout" a la importación
 import { API_URL, showToast, logout } from './api.js';
 
-// 2. Ejecutar checkSession al cargar la página para quitar el spinner
 document.addEventListener("DOMContentLoaded", () => {
     checkSession();
 });
@@ -46,7 +43,6 @@ const registro = async (e, role) => {
     if (!terms) return showToast("Debes aceptar los términos", "warning");
 
     try {
-        // IMPORTANTE: Verifica que tu backend use /api/registro o /api/usuarios/registro
         const response = await fetch(`${API_URL}/registro`, { 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

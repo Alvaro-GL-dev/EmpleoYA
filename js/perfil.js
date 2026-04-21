@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   cargarDatosEmpresa();
   cargarDashboardStats();
 });
-// ======================== FUNCIONES DE ALEXTECH ========================
+// FUNCIONES
 
 async function cargarDatosEmpresa() {
     try {
@@ -34,7 +34,6 @@ async function cargarDatosEmpresa() {
             document.getElementById('compUbicacion').value = data.ubicacion || '';
             document.getElementById('compDesc').value = data.descripcion || '';
             
-            // Actualizar saludo dinámico
             const name = data.nombre_comercial || data.razon_social || 'AlexTech';
             document.getElementById('dashboardTitle').innerText = name;
         }
@@ -77,14 +76,12 @@ async function actualizarPerfilEmpresa(e) {
     e.preventDefault();
     showToast("Sincronizando con el servidor...", "info");
 
-    // MAPEAMOS LOS CAMPOS AL NOMBRE QUE PIDE EL BACKEND
     const payload = {
         razon_social: document.getElementById('compNombre').value,
         nombre_comercial: document.getElementById('compNombre').value, // o un campo separado si lo tienes
         sitio_web: document.getElementById('compWeb').value,
         ubicacion_sede: document.getElementById('compUbicacion').value,
         descripcion_empresa: document.getElementById('compDesc').value,
-        // Opcionales: nit_o_registro, url_logo (pueden quedar null)
     };
 
     try {
@@ -96,11 +93,9 @@ async function actualizarPerfilEmpresa(e) {
 
         if (res.ok) {
             showToast("¡Datos de AlexTech actualizados!", "success");
-            // Actualizar el nombre en el saludo
             document.getElementById('dashboardTitle').innerText = payload.razon_social;
         } else {
             const errorData = await res.json();
-            // Esto mostrará el error específico si algo más falta
             showToast(errorData.error || "Error de validación", "danger");
         }
     } catch (e) {
@@ -116,7 +111,7 @@ async function cargarPerfilCandidato() {
     if (!res.ok) {
       if (res.status === 404) {
         console.log("Perfil aún no creado, mostrando formulario vacío.");
-        return; // Es normal si es nuevo
+        return;
       }
       throw new Error("Error al cargar perfil");
     }
@@ -130,7 +125,7 @@ async function cargarPerfilCandidato() {
     document.getElementById('cCV').value = data.url_curriculum_pdf || '';
     document.getElementById('cFoto').value = data.foto_perfil_url || '';
     document.getElementById('cResumen').value = data.resumen_biografico || '';
-    // Habilidades: unir array con comas
+
     if (data.habilidades_tecnicas && Array.isArray(data.habilidades_tecnicas)) {
       document.getElementById('cHabilidades').value = data.habilidades_tecnicas.join(', ');
     } else {

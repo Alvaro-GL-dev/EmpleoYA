@@ -1,4 +1,3 @@
-// js/login.js
 import { API_URL, showToast } from './api.js';
 
 const checkSession = () => {
@@ -24,9 +23,8 @@ const checkSession = () => {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    checkSession(); // <-- Esto quita el spinner al cargar
+    checkSession();
     
-    // Aquí sigue tu lógica de login que ya tenías...
     console.log("Login JS listo");
 });
 
@@ -45,18 +43,16 @@ const login = async (e, emailId, passwordId) => {
         const data = await response.json();
 
         if (response.ok) {
-            // Guardamos los datos necesarios
             localStorage.setItem('token', data.token);
             localStorage.setItem('rol', data.usuario.rol);
             
             showToast('¡Bienvenido a EmpleoYA!', 'success');
             
-            // REDIRECCIÓN CORREGIDA
             setTimeout(() => {
                 const rol = data.usuario.rol;
                 
                 if (rol === 'ADMINISTRADOR') {
-                    window.location.href = 'admin-dashboard.html'; // Te envía a tu panel
+                    window.location.href = 'admin-dashboard.html';
                 } else if (rol === 'EMPRESA') {
                     window.location.href = 'empresa.html';
                 } else {
@@ -72,6 +68,5 @@ const login = async (e, emailId, passwordId) => {
     }
 };
 
-// Vinculación con tus formularios de login.html
 document.getElementById('loginCandidatoForm')?.addEventListener('submit', (e) => login(e, 'candidatoEmail', 'candidatoPassword'));
 document.getElementById('loginEmpresaForm')?.addEventListener('submit', (e) => login(e, 'empresaEmail', 'empresaPassword'));

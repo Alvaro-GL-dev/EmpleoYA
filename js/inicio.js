@@ -1,7 +1,7 @@
 // js/inicio.js
 import { API_URL, logout, showToast } from './api.js';
 
-// 🔹 1. Cargar Vacantes (Público)
+// Cargar Vacantes
 async function cargarVacantes() {
     const container = document.getElementById("jobsContainer");
     const jobCountSpan = document.getElementById("jobCount");
@@ -36,7 +36,7 @@ async function cargarVacantes() {
         // Manejo de clics en "Postularse"
         document.querySelectorAll('.apply-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                e.stopPropagation(); // Evita el clic de la tarjeta
+                e.stopPropagation();
                 verificarYRedirigir();
             });
         });
@@ -46,7 +46,7 @@ async function cargarVacantes() {
     }
 }
 
-// 🔹 2. Verificación de Seguridad
+// Verificación de Seguridad
 const verificarYRedirigir = () => {
     if(!localStorage.getItem('token')) {
         showToast("Crea una cuenta para postularte a empleos o cargar tu CV", "info");
@@ -57,7 +57,7 @@ const verificarYRedirigir = () => {
     return true;
 };
 
-// 🔹 3. Configurar Navbar Dinámico (LO QUE FALTABA)
+// Configurar Navbar Dinámico
 const checkSession = () => {
     const token = localStorage.getItem('token');
     const rol = localStorage.getItem('rol');
@@ -86,6 +86,5 @@ document.addEventListener("DOMContentLoaded", () => {
     checkSession();
     cargarVacantes();
     
-    // Si tienes un botón de "Cargar CV" en el Hero, añádele este evento:
     document.getElementById('heroUploadCV')?.addEventListener('click', verificarYRedirigir);
 });

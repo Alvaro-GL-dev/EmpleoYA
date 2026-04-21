@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-// ======================== GESTIÓN DE TABS ========================
+// GESTIÓN DE TABS 
 function initTabs() {
     const tabs = document.querySelectorAll('#navTabs .nav-link, #navTabs button');
     const contents = { 
@@ -49,7 +49,7 @@ function initTabs() {
     });
 }
 
-// ======================== CRUD VACANTES ========================
+// CRUD VACANTES 
 async function cargarMisVacantes() {
     const container = document.getElementById("vacantesContainer");
     try {
@@ -57,7 +57,7 @@ async function cargarMisVacantes() {
         const vacantes = await res.json();
         
         if (!Array.isArray(vacantes) || vacantes.length === 0) { 
-            container.innerHTML = '<div class="text-center w-100 py-5"><p class="text-muted">No tienes vacantes activas en AlexTech.</p></div>'; 
+            container.innerHTML = '<div class="text-center w-100 py-5"><p class="text-muted">No tienes vacantes activas.</p></div>'; 
             return; 
         }
 
@@ -70,8 +70,7 @@ async function cargarMisVacantes() {
                         <button class="btn btn-link text-muted p-0 border-0" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical fs-5"></i></button>
                         <ul class="dropdown-menu shadow border-0">
                             <li><button class="dropdown-item" onclick="window.abrirEdicion('${encodeURIComponent(JSON.stringify(job))}')"><i class="bi bi-pencil me-2"></i>Editar</button></li>
-                            <li><button class="dropdown-item text-danger" onclick="window.eliminarVacante('${job.id}')"><i class="bi bi-trash me-2"></i>Cerrar</button></li>
-                        </ul>
+                            <li><button class="dropdown-item text-danger" onclick="window.eliminarVacante('${job.id}')"><i class="bi bi-trash me-2"></i>Eliminar</button></li>                        </ul>
                     </div>
                 </div>
                 <h5 class="fw-bold">${job.titulo_puesto}</h5>
@@ -120,7 +119,6 @@ async function guardarVacante(e) {
     } catch (e) { showToast("Error de red", "danger"); }
 }
 
-// ======================== PIPELINE (7 FASES) ========================
 window.verPostulantes = async (vacanteId, titulo) => {
     document.getElementById("tabCandidatos").click();
     document.getElementById("tituloVacanteCandidatos").innerHTML = `Gestión: <span class="text-primary">${titulo}</span>`;
@@ -168,7 +166,7 @@ window.actualizarEstado = async (id, est, vacId, tit) => {
     } catch (e) { showToast("Error de conexión", "danger"); }
 };
 
-// ======================== AUXILIARES ========================
+// AUXILIARES 
 window.abrirEdicion = (vStr) => {
     const v = JSON.parse(decodeURIComponent(vStr));
     document.getElementById('vVacanteId').value = v.id;
@@ -187,21 +185,44 @@ window.abrirEdicion = (vStr) => {
 };
 
 window.eliminarVacante = async (id) => {
-    if(!confirm("¿Estás seguro de cerrar esta vacante permanentemente?")) return;
+    if(!confirm("¿Estás seguro de ELIMINAR esta vacante permanentemente? Esto borrará también a todos los candidatos postulados a ella.")) return;
+    
     try {
-        const res = await fetch(`${API_URL}/vacantes/${id}/cerrar`, { method: 'PATCH', headers: getHeaders() });
-        if(res.ok) { showToast("Vacante cerrada correctamente", "success"); cargarMisVacantes(); }
-    } catch (e) { showToast("Error al cerrar", "danger"); }
+        const res = await fetch(`${API_URL}/vacantes/${id}`, { 
+            method: 'DELETE', 
+            headers: getHeaders() 
+        });
+        
+        if(res.ok) { 
+            showToast("Vacante y postulaciones eliminadas permanentemente", "success"); 
+            cargarMisVacantes(); 
+        } else {
+            const data = await res.json();
+            showToast(data.error || "Error al eliminar la vacante", "danger");
+        }
+    } catch (e) { 
+        showToast("Error de conexión al intentar eliminar", "danger"); 
+    }
 };
 
 async function cargarPerfilEmpresa() {
     try {
         const res = await fetch(`${API_URL}/empresas/mi-empresa`, { headers: getHeaders() });
-        const data = await res.json();
+        
         if (res.ok) {
-            document.getElementById('companyNameDisplay').innerText = data.nombre_comercial || 'AlexTech';
+            const data = await res.json();
+            
+            const nombreEmpresa = data.nombre_comercial || data.razon_social || 'Mi Empresa';
+            
+            // Actualizamos el Navbar
+            const displayElement = document.getElementById('companyNameDisplay');
+            if (displayElement) {
+                displayElement.innerText = nombreEmpresa;
+            }
         }
-    } catch (e) {}
+    } catch (e) {
+        console.error("Error al cargar el perfil de la empresa:", e);
+    }
 }
 
 function filtrarVacantesLocal(e) {

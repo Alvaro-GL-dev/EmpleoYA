@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('btnLogout')?.addEventListener('click', logout);
     document.getElementById('formPerfilCandidatoCompleto')?.addEventListener('submit', guardarPerfilCandidato);
     document.getElementById('formNuevaPublicacion')?.addEventListener('submit', guardarNuevaPublicacion);
+    document.getElementById('btnCargarCV')?.addEventListener('click', () => {document.getElementById('inputCargarCV').click();});
+    
 
     initTabs();
     cargarPerfilCandidato(); 
@@ -17,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarMisPostulaciones(); 
 });
 
-// ======================== TABS (AZUL INSTANTÁNEO) ========================
 function initTabs() {
     const tabs = document.querySelectorAll('#navTabs .nav-link');
     const contents = {
@@ -30,7 +31,6 @@ function initTabs() {
 
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
-            // UI primero: Cambiar clase activa
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
 
@@ -41,7 +41,6 @@ function initTabs() {
 
             if(contents[tabId]) {
                 contents[tabId].style.display = 'block';
-                // Carga de datos secundaria
                 try {
                     if(tabId === 'comunidad') cargarPostsForo();
                     if(tabId === 'recursos') cargarRecursos();
@@ -52,7 +51,7 @@ function initTabs() {
     });
 }
 
-// ======================== VACANTES (DISEÑO ORIGINAL + FIX 400) ========================
+// VACANTES
 async function cargarVacantesDisponibles() {
     const container = document.getElementById("jobsContainer");
     if(!container) return;
@@ -64,7 +63,7 @@ async function cargarVacantesDisponibles() {
 
         container.innerHTML = vacantes.map(job => `
             <div class="col-md-6 col-lg-4 mb-4">
-              <div class="job-card p-4 h-100 d-flex flex-column shadow-sm border border-light rounded-4 bg-white">
+              <div class="job-card p-4 h-100 d-flex flex-column shadow-sm border border-light rounded-4 bg-white" data-vacante-id="${job.id}" style="cursor: pointer;">
                 <div class="d-flex justify-content-between mb-2">
                     <span class="badge bg-primary bg-opacity-10 text-primary">${job.modalidad}</span>
                     <span class="text-success fw-bold small">${job.rango_salarial_max ? '$'+job.rango_salarial_max : 'A convenir'}</span>
@@ -80,11 +79,28 @@ async function cargarVacantesDisponibles() {
               </div>
             </div>`).join('');
 
-        // FIX: Listener directo al atributo para capturar el ID siempre
-        document.querySelectorAll('.btn-postularse').forEach(btn => {
-            btn.onclick = () => postularseAVacante(btn.getAttribute('data-id'));
+        // Delegación de eventos para manejar clics en tarjetas y botones
+        container.addEventListener('click', (e) => {
+            const botonPostular = e.target.closest('.btn-postularse');
+            if (botonPostular) {
+                const idVacante = botonPostular.getAttribute('data-id');
+                postularseAVacante(idVacante);
+                e.stopPropagation(); // Evita que también se abra el modal
+                return;
+            }
+
+            const card = e.target.closest('.job-card');
+            if (card) {
+                const idVacante = card.getAttribute('data-vacante-id');
+                if (idVacante) {
+                    verDetallesVacante(idVacante);
+                }
+            }
         });
-    } catch (e) { container.innerHTML = "Error al cargar vacantes."; }
+
+    } catch (e) {
+        container.innerHTML = "Error al cargar vacantes.";
+    }
 }
 
 async function postularseAVacante(id) {
@@ -92,7 +108,6 @@ async function postularseAVacante(id) {
         const res = await fetch(`${API_URL}/postulaciones`, {
             method: 'POST',
             headers: getHeaders(),
-            // Enviamos ambos formatos para que Kevin no tenga excusas (400 Bad Request Fix)
             body: JSON.stringify({ vacante_id: id, vacanteId: id }) 
         });
         if(res.ok) { 
@@ -106,7 +121,7 @@ async function postularseAVacante(id) {
     } catch (e) { showToast("Error de conexión", "danger"); }
 }
 
-// ======================== MIS SOLICITUDES (TU DISEÑO ORIGINAL RESTAURADO) ========================
+// MIS SOLICITUDES
 async function cargarMisPostulaciones() {
     const container = document.getElementById("solicitudesContainer");
     if(!container) return;
@@ -127,7 +142,6 @@ async function cargarMisPostulaciones() {
             };
             const info = estados[post.etapa_actual] || estados['RECIBIDA'];
 
-            // RESTAURACIÓN EXACTA DE TU HTML ORIGINAL
             return `
             <div class="col-md-6 col-lg-4 mb-4">
               <div class="solicitud-card p-4 h-100 shadow-sm border-0 bg-white" style="border-radius: 24px; border-top: 5px solid var(--bs-${info.color}) !important;">
@@ -161,7 +175,7 @@ async function cargarMisPostulaciones() {
     } catch (e) { container.innerHTML = "Sin postulaciones."; }
 }
 
-// ======================== OTROS MÓDULOS (FOROS Y RECURSOS ACTUALIZADOS) ========================
+// FOROS Y RECURSOS
 async function cargarRecursos() {
     const container = document.getElementById("recursosContainer");
     try {
@@ -211,31 +225,78 @@ async function cargarPerfilCandidato() {
     try {
         const res = await fetch(`${API_URL}/candidatos/mi-perfil`, { headers: getHeaders() });
         if (!res.ok) return;
-        const data = await res.json();
-        if(document.getElementById('visualName')) document.getElementById('visualName').innerText = `${data.nombres} ${data.apellidos}`;
-        if(document.getElementById('metricVistas')) document.getElementById('metricVistas').innerHTML = `<i class="bi bi-eye"></i> ${data.vistas_perfil || 0} Vistas`;
         
+        const data = await res.json();
+        
+        // 1. Llenar la Tarjeta Visual (Izquierda)
+        if(document.getElementById('visualName')) {
+            document.getElementById('visualName').innerText = `${data.nombres || ''} ${data.apellidos || ''}`.trim() || 'Candidato';
+        }
+        if(document.getElementById('visualTitle')) {
+            document.getElementById('visualTitle').innerText = data.titular_profesional || 'Profesión no especificada';
+        }
+        if(document.getElementById('visualResumen')) {
+            document.getElementById('visualResumen').innerText = data.resumen_biografico || 'Aún no has añadido un resumen.';
+        }
+        if(document.getElementById('metricVistas')) {
+            document.getElementById('metricVistas').innerHTML = `<i class="bi bi-eye"></i> ${data.vistas_perfil || 0} Vistas`;
+        }
+
+        // 2. Llenar las "Píldoras" de Habilidades (Opcional pero recomendado para el UI)
+        const skillsContainer = document.getElementById('visualSkillsContainer');
+        if (skillsContainer) {
+            if (data.habilidades_tecnicas && data.habilidades_tecnicas.length > 0) {
+                skillsContainer.innerHTML = data.habilidades_tecnicas
+                    .map(skill => `<span class="skill-pill">${skill}</span>`)
+                    .join('');
+            } else {
+                skillsContainer.innerHTML = '';
+            }
+        }
+        
+        // 3. Llenar los campos del Formulario (Derecha)
         document.getElementById('cNombres').value = data.nombres || '';
         document.getElementById('cApellidos').value = data.apellidos || '';
         document.getElementById('cProfesion').value = data.titular_profesional || '';
         document.getElementById('cHabilidades').value = data.habilidades_tecnicas ? data.habilidades_tecnicas.join(', ') : '';
         document.getElementById('cResumen').value = data.resumen_biografico || '';
-    } catch (e) { console.error(e); }
+        
+    } catch (e) { 
+        console.error("Error al cargar perfil:", e); 
+    }
 }
 
 async function guardarPerfilCandidato(e) {
     e.preventDefault();
+    
+    const habilidadesInput = document.getElementById('cHabilidades').value;
+    const habilidadesArray = habilidadesInput ? habilidadesInput.split(',').map(s => s.trim()).filter(Boolean) : [];
+
     const payload = {
         nombres: document.getElementById('cNombres').value,
         apellidos: document.getElementById('cApellidos').value,
         titular_profesional: document.getElementById('cProfesion').value,
         resumen_biografico: document.getElementById('cResumen').value,
-        habilidades_tecnicas: document.getElementById('cHabilidades').value.split(',').map(s => s.trim())
+        habilidades_tecnicas: habilidadesArray
     };
+
     try {
-        const res = await fetch(`${API_URL}/candidatos/mi-perfil`, { method: 'POST', headers: getHeaders(), body: JSON.stringify(payload) });
-        if(res.ok) { showToast("Perfil guardado", "success"); cargarPerfilCandidato(); }
-    } catch (e) { showToast("Error al guardar", "danger"); }
+        const res = await fetch(`${API_URL}/candidatos/mi-perfil`, { 
+            method: 'POST',
+            headers: getHeaders(), 
+            body: JSON.stringify(payload) 
+        });
+
+        if(res.ok) { 
+            showToast("Perfil actualizado correctamente", "success"); 
+            cargarPerfilCandidato(); 
+        } else {
+            const data = await res.json();
+            showToast(data.error || "Error al actualizar perfil", "danger");
+        }
+    } catch (e) { 
+        showToast("Error de conexión con el servidor", "danger"); 
+    }
 }
 
 async function guardarNuevaPublicacion(e) {
@@ -260,7 +321,7 @@ async function guardarNuevaPublicacion(e) {
             // 1. Limpiar el formulario
             document.getElementById('formNuevaPublicacion').reset();
             
-            // 2. Cerrar el modal usando la instancia de Bootstrap
+            // 2. Cerrar el modal
             const modalElement = document.getElementById('modalCrearPost');
             const modal = bootstrap.Modal.getInstance(modalElement);
             modal.hide();
@@ -278,7 +339,7 @@ async function guardarNuevaPublicacion(e) {
 
 async function verDetallesVacante(vacanteId) {
     try {
-        // 1. Pedimos al backend toda la info (Vacante + Datos de su Empresa)
+        // 1. Pedimos al backend toda la info 
         const res = await fetch(`${API_URL}/vacantes/${vacanteId}`, { headers: getHeaders() });
         const v = await res.json();
 
@@ -291,7 +352,7 @@ async function verDetallesVacante(vacanteId) {
         document.getElementById('detVacanteReq').innerText = v.requisitos;
         document.getElementById('detVacanteSalario').innerText = v.rango_salarial_max ? `$${v.rango_salarial_max}` : 'Sueldo competitivo';
 
-        // 3. Llenamos los datos del Perfil de Empresa (La pestaña oculta)
+        // 3. Llenamos los datos del Perfil de Empresa
         document.getElementById('perfilEmpresaNombre').innerText = v.razon_social;
         document.getElementById('perfilEmpresaDesc').innerText = v.descripcion_empresa || 'Sin descripción disponible.';
         document.getElementById('perfilEmpresaSede').innerText = v.ubicacion_sede || 'San Salvador';
@@ -310,3 +371,10 @@ async function verDetallesVacante(vacanteId) {
         showToast("No se pudo cargar la información", "danger");
     }
 }
+
+document.getElementById('inputCargarCV')?.addEventListener('change', (e) => {
+    if(e.target.files.length > 0) {
+        const nombreArchivo = e.target.files[0].name;
+        showToast(`CV seleccionado: ${nombreArchivo}`, "success");
+    }
+});

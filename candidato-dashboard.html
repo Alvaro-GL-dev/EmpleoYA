@@ -26,8 +26,10 @@
         <li class="nav-item"><button class="nav-link" data-tab="perfil">Mi perfil</button></li>
       </ul>
       <div class="d-flex gap-2 align-items-center">
-        <button class="btn btn-primary rounded-pill px-4 btn-sm fw-bold">Cargar CV</button>
-        <button class="btn btn-outline-secondary rounded-pill px-4 btn-sm fw-bold" id="btnLogout">Cerrar sesion</button>
+        <button class="btn btn-primary rounded-pill px-4 btn-sm fw-bold" id="btnCargarCV">Cargar CV</button>
+        <input type="file" id="inputCargarCV" accept=".pdf,.doc,.docx" class="d-none">
+        
+        <button class="btn btn-outline-secondary rounded-pill px-4 btn-sm fw-bold" id="btnLogout">Cerrar sesión</button>
       </div>
     </div>
   </div>
@@ -37,7 +39,7 @@
   <div id="buscarTab" class="tab-content">
     <div class="text-center mb-5">
       <h1 class="fw-bold display-5 mb-3">Encuentra tu próximo empleo hoy</h1>
-      <p class="text-muted">Explora ofertas activas en tecnología con el respaldo de AlexTech.</p>
+      <p class="text-muted">Explora ofertas activas en tecnología con el respaldo de EmpleoYa.</p>
     </div>
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h5 class="fw-bold mb-0"><i class="bi bi-star-fill text-warning me-2"></i>Ofertas disponibles</h5>
@@ -99,7 +101,9 @@
         </div>
       </div>
       <div class="col-md-3">
-        <button class="btn btn-primary w-100 rounded-3 fw-bold py-2 shadow-sm" style="background-color: #2547d2; border:none;">+ Crear publicación</button>
+        <button class="btn btn-primary w-100 rounded-3 fw-bold py-2 shadow-sm" style="background-color: #2547d2; border:none;" data-bs-toggle="modal" data-bs-target="#modalCrearPost">
+          + Crear publicación
+        </button>      
       </div>
     </div>
     <div class="d-flex gap-2 mb-4 overflow-x-auto pb-2">
@@ -174,6 +178,39 @@
       </div>
     </div>
   </div>
+  <div class="modal fade" id="modalCrearPost" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 border-0 shadow-lg">
+      <div class="modal-header border-0 pb-0">
+        <h5 class="modal-title fw-bold">Nueva Publicación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formNuevaPublicacion">
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Título de tu pregunta o aporte</label>
+            <input type="text" class="form-control rounded-pill bg-light border-0 px-3" id="postTitulo" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold small">Categoría</label>
+            <select class="form-select rounded-pill bg-light border-0 px-3" id="postCategoria" required>
+              <option value="1">Entrevistas</option>
+              <option value="2">CV</option>
+              <option value="3">Programación</option>
+              <option value="4">Salarios</option>
+              <option value="5">Consejos</option>
+            </select>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-semibold small">Contenido</label>
+            <textarea class="form-control rounded-4 bg-light border-0 p-3" id="postContenido" rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-bold">Publicar en la comunidad</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="modal fade" id="modalDetalleVacante" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content border-0 rounded-4 shadow-lg">

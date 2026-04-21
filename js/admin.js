@@ -114,9 +114,7 @@ async function cargarMetricasReales() {
     } catch (e) { console.warn("Métricas no cargadas."); }
 }
 
-// ----------------------------------------------------
-// TABLA DE USUARIOS (Con Activar / Suspender)
-// ----------------------------------------------------
+// TABLA DE USUARIOS
 async function listarUsuariosAdmin() {
     const container = document.getElementById("listaUsuariosAdmin");
     if (!container) return;
@@ -187,9 +185,8 @@ window.cambiarEstadoUsuario = async (id, accion) => {
     } catch (error) { showToast("Error de red", "danger"); }
 };
 
-// ----------------------------------------------------
-// TABLA DE VACANTES (Ajustado a titulo_puesto)
-// ----------------------------------------------------
+
+// TABLA DE VACANTES
 async function listarVacantesAdmin() {
     const container = document.getElementById("listaVacantesAdmin");
     if (!container) return;
@@ -223,9 +220,7 @@ window.eliminarVacante = async (id) => {
     } catch (error) { showToast("Error", "danger"); }
 };
 
-// ----------------------------------------------------
 // TABLA DE FORO/RECURSOS
-// ----------------------------------------------------
 async function listarRecursosAdmin() {
     const container = document.getElementById("listaRecursosAdmin");
     if (!container) return;
@@ -286,7 +281,7 @@ async function guardarNuevoRecurso(e) {
         if (res.ok) {
             showToast("Recurso publicado con éxito", "success");
             
-            // Cerrar el modal usando Bootstrap
+            // Cerrar el modal
             const modalEl = document.getElementById('modalNuevoRecurso');
             const modal = bootstrap.Modal.getInstance(modalEl);
             modal.hide();
