@@ -28,14 +28,20 @@ async function cargarDatosEmpresa() {
         const res = await fetch(`${API_URL}/empresas/mi-empresa`, { headers: getHeaders() });
         const data = await res.json();
         if (res.ok) {
-            // Llenar inputs usando los nombres exactos de tu base de datos
+            // Llenar inputs usando los nombres exactos de la base de datos
             document.getElementById('compNombre').value = data.nombre_comercial || data.razon_social || '';
             document.getElementById('compWeb').value = data.sitio_web || '';
             document.getElementById('compUbicacion').value = data.ubicacion_sede || '';
             document.getElementById('compDesc').value = data.descripcion_empresa || '';
             
+            // Título de bienvenida
             const name = data.nombre_comercial || data.razon_social || 'AlexTech';
             document.getElementById('dashboardTitle').innerText = name;
+
+            // Actualizar el nombre en el Navbar (Esquina superior derecha)
+            if (document.getElementById('companyNameDisplay')) {
+                document.getElementById('companyNameDisplay').innerText = name;
+            }
         }
     } catch (e) { console.error("Error al cargar datos"); }
 }
@@ -45,31 +51,40 @@ async function cargarDashboardStats() {
     const activeJobsSpan = document.getElementById("activeJobsCount");
 
     try {
-        const res = await fetch(`${API_URL}/vacantes`, { headers: getHeaders() });
+        const res = await fetch(`${API_URL}/vacantes/mis-vacantes`, { headers: getHeaders() });
         const vacantes = await res.json();
 
         if (Array.isArray(vacantes)) {
-            activeJobsSpan.innerText = vacantes.length;
+            // Filtrar para que el contador solo sume las vacantes 'PUBLICADAS'
+            const vacantesActivas = vacantes.filter(v => v.estado === 'PUBLICADA');
+            activeJobsSpan.innerText = vacantesActivas.length;
             
             if (vacantes.length === 0) {
                 container.innerHTML = `<p class="text-muted text-center py-5">Sin vacantes publicadas.</p>`;
                 return;
             }
 
-            container.innerHTML = vacantes.slice(0, 4).map(v => `
+            // Aquí mostramos hasta 4 vacantes recientes en la lista
+            container.innerHTML = vacantes.slice(0, 4).map(v => {
+                const estadoClase = v.estado === 'FINALIZADA' ? 'bg-danger bg-opacity-10 text-danger' : 'bg-success-soft text-success';
+                
+                return `
                 <div class="d-flex justify-content-between align-items-center p-3 mb-3 bg-white rounded-4 border hover-shadow transition shadow-sm">
                     <div class="d-flex align-items-center gap-3">
-                        <div class="icon-box bg-primary-soft text-primary"><i class="bi bi-lightning-fill"></i></div>
+                        <div class="icon-box bg-primary-soft text-primary"><i class="bi bi-briefcase-fill"></i></div>
                         <div>
                             <h6 class="fw-bold mb-0 small">${v.titulo_puesto}</h6>
                             <p class="mb-0 extra-small text-muted">${v.modalidad} · ${v.ubicacion_especifica || 'Global'}</p>
                         </div>
                     </div>
-                    <span class="badge bg-success-soft text-success rounded-pill px-3 py-2 extra-small fw-bold">ACTIVA</span>
+                    <span class="badge ${estadoClase} rounded-pill px-3 py-2 extra-small fw-bold">${v.estado || 'ACTIVA'}</span>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
-    } catch (e) { container.innerHTML = "Error de conexión"; }
+    } catch (e) { 
+        container.innerHTML = "Error de conexión al cargar estadísticas"; 
+    }
 }
 
 async function actualizarPerfilEmpresa(e) {

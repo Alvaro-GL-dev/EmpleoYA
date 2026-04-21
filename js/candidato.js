@@ -11,9 +11,32 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('formPerfilCandidatoCompleto')?.addEventListener('submit', guardarPerfilCandidato);
     document.getElementById('formNuevaPublicacion')?.addEventListener('submit', guardarNuevaPublicacion);
     document.getElementById('btnCargarCV')?.addEventListener('click', () => {document.getElementById('inputCargarCV').click();});
+
+    // Eventos para la nueva barra de búsqueda
+    document.getElementById('cSearchBtn')?.addEventListener('click', filtrarVacantes);
+    document.getElementById('cSearchKeyword')?.addEventListener('input', filtrarVacantes);
+    document.getElementById('cFilterLocation')?.addEventListener('change', filtrarVacantes);
     
 
     initTabs();
+
+    const params = new URLSearchParams(window.location.search);
+    
+    // Abrir pestaña específica si viene en la URL
+    const tabToOpen = params.get('tab');
+    if (tabToOpen) {
+        const tabButton = document.querySelector(`[data-tab="${tabToOpen}"]`);
+        if (tabButton) tabButton.click();
+    }
+
+    // Abrir modal de vacante si viene en la URL
+    const vacanteIdToOpen = params.get('vacante');
+    if (vacanteIdToOpen) {
+        setTimeout(() => {
+            verDetallesVacante(vacanteIdToOpen);
+        }, 500);
+    }
+
     cargarPerfilCandidato(); 
     cargarVacantesDisponibles();
     cargarMisPostulaciones(); 
@@ -52,55 +75,92 @@ function initTabs() {
 }
 
 // VACANTES
+let todasLasVacantesCandidato = [];
+
 async function cargarVacantesDisponibles() {
     const container = document.getElementById("jobsContainer");
     if(!container) return;
 
     try {
         const res = await fetch(`${API_URL}/vacantes`, { headers: getHeaders() });
-        const vacantes = await res.json();
-        document.getElementById("jobCount").innerText = `${vacantes.length} empleos`;
+        todasLasVacantesCandidato = await res.json();
+        
+        mostrarVacantes(todasLasVacantesCandidato);
 
-        container.innerHTML = vacantes.map(job => `
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="job-card p-4 h-100 d-flex flex-column shadow-sm border border-light rounded-4 bg-white" data-vacante-id="${job.id}" style="cursor: pointer;">
-                <div class="d-flex justify-content-between mb-2">
-                    <span class="badge bg-primary bg-opacity-10 text-primary">${job.modalidad}</span>
-                    <span class="text-success fw-bold small">${job.rango_salarial_max ? '$'+job.rango_salarial_max : 'A convenir'}</span>
-                </div>
-                <h5 class="fw-bold text-dark mt-2">${job.titulo_puesto}</h5>
-                    <div class="small text-muted mb-2"><i class="bi bi-building me-1"></i> ${job.empresa_nombre || job.nombre_comercial || job.razon_social || 'Empresa Confidencial'}</div>
-                <p class="text-muted small flex-grow-1">${job.descripcion_puesto.substring(0, 90)}...</p>
-                <div class="mt-auto pt-3 border-top">
-                    <button class="btn btn-primary rounded-pill w-100 fw-bold btn-postularse" data-id="${job.id}">
-                        Postularme Ahora
-                    </button>
-                </div>
-              </div>
-            </div>`).join('');
-
-        // Delegación de eventos para manejar clics en tarjetas y botones
-        container.addEventListener('click', (e) => {
-            const botonPostular = e.target.closest('.btn-postularse');
-            if (botonPostular) {
-                const idVacante = botonPostular.getAttribute('data-id');
-                postularseAVacante(idVacante);
-                e.stopPropagation(); // Evita que también se abra el modal
-                return;
-            }
-
-            const card = e.target.closest('.job-card');
-            if (card) {
-                const idVacante = card.getAttribute('data-vacante-id');
-                if (idVacante) {
-                    verDetallesVacante(idVacante);
+        // Delegación de eventos (Aseguramos que solo se active una vez)
+        if (!container.dataset.listenerAttached) {
+            container.addEventListener('click', (e) => {
+                const botonPostular = e.target.closest('.btn-postularse');
+                if (botonPostular) {
+                    const idVacante = botonPostular.getAttribute('data-id');
+                    postularseAVacante(idVacante);
+                    e.stopPropagation(); 
+                    return;
                 }
-            }
-        });
 
+                const card = e.target.closest('.job-card');
+                if (card) {
+                    const idVacante = card.getAttribute('data-vacante-id');
+                    if (idVacante) {
+                        verDetallesVacante(idVacante);
+                    }
+                }
+            });
+            container.dataset.listenerAttached = 'true';
+        }
     } catch (e) {
         container.innerHTML = "Error al cargar vacantes.";
     }
+}
+
+function mostrarVacantes(vacantes) {
+    const container = document.getElementById("jobsContainer");
+    document.getElementById("jobCount").innerText = `${vacantes.length} empleos`;
+
+    if(vacantes.length === 0) {
+        container.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted fs-5">No se encontraron vacantes con esos filtros.</p></div>';
+        return;
+    }
+
+    container.innerHTML = vacantes.map(job => `
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="job-card p-4 h-100 d-flex flex-column shadow-sm border border-light rounded-4 bg-white" data-vacante-id="${job.id}" style="cursor: pointer;">
+            <div class="d-flex justify-content-between mb-2">
+                <span class="badge bg-primary bg-opacity-10 text-primary">${job.modalidad}</span>
+                <span class="text-success fw-bold small">${job.rango_salarial_max ? '$'+job.rango_salarial_max : 'A convenir'}</span>
+            </div>
+            <h5 class="fw-bold text-dark mt-2">${job.titulo_puesto}</h5>
+                <div class="small text-muted mb-2"><i class="bi bi-building me-1"></i> ${job.empresa_nombre || job.nombre_comercial || job.razon_social || 'Empresa Confidencial'}</div>
+            <p class="text-muted small flex-grow-1">${job.descripcion_puesto.substring(0, 90)}...</p>
+            <div class="mt-auto pt-3 border-top">
+                <button class="btn btn-primary rounded-pill w-100 fw-bold btn-postularse" data-id="${job.id}">
+                    Postularme Ahora
+                </button>
+            </div>
+          </div>
+        </div>`).join('');
+}
+
+function filtrarVacantes() {
+    const keyword = document.getElementById('cSearchKeyword').value.toLowerCase();
+    const location = document.getElementById('cFilterLocation').value.toLowerCase();
+
+    const filtradas = todasLasVacantesCandidato.filter(job => {
+        const titulo = (job.titulo_puesto || '').toLowerCase();
+        const empresa = (job.empresa_nombre || job.nombre_comercial || job.razon_social || '').toLowerCase();
+        const modalidad = (job.modalidad || '').toLowerCase();
+        const ubicacion = (job.ubicacion_especifica || '').toLowerCase();
+
+        // Revisa si la palabra clave coincide con el título o la empresa
+        const coincideKeyword = titulo.includes(keyword) || empresa.includes(keyword);
+        
+        // Revisa si la ubicación coincide con la sede o con modalidades como "Remoto"
+        const coincideLocation = location === '' || ubicacion.includes(location) || modalidad.includes(location);
+
+        return coincideKeyword && coincideLocation;
+    });
+
+    mostrarVacantes(filtradas);
 }
 
 async function postularseAVacante(id) {
@@ -192,7 +252,9 @@ async function cargarRecursos() {
                   <p class="text-muted extra-small mb-3">Guía completa para destacar tus fortalezas profesionales.</p>
                   <div class="d-flex justify-content-between align-items-center mt-auto">
                     <span class="tag-recurso">${r.tipo}</span>
-                    <button class="btn btn-link p-0 text-primary fw-bold extra-small text-decoration-none">Ver recurso</button>
+                    <a href="https://developer.chrome.com/docs/devtools/resources?hl=es-419" target="_blank" class="btn btn-link p-0 text-primary fw-bold extra-small text-decoration-none">
+                        Ver recurso
+                    </a>
                   </div>
                 </div>
               </div>
@@ -349,11 +411,11 @@ async function guardarNuevaPublicacion(e) {
 
 async function verDetallesVacante(vacanteId) {
     try {
-        // 1. Pedimos al backend toda la info 
+        // Pedimos al backend toda la info 
         const res = await fetch(`${API_URL}/vacantes/${vacanteId}`, { headers: getHeaders() });
         const v = await res.json();
 
-        // 2. Llenamos los datos del Trabajo
+        // Llenamos los datos del Trabajo
         document.getElementById('detVacanteTitulo').innerText = v.titulo_puesto;
         document.getElementById('detEmpresaNombre').innerText = v.nombre_comercial || v.razon_social;
         document.getElementById('detVacanteUbicacion').innerText = v.ubicacion_especifica || 'No especificada';
@@ -362,7 +424,7 @@ async function verDetallesVacante(vacanteId) {
         document.getElementById('detVacanteReq').innerText = v.requisitos;
         document.getElementById('detVacanteSalario').innerText = v.rango_salarial_max ? `$${v.rango_salarial_max}` : 'Sueldo competitivo';
 
-        // 3. Llenamos los datos del Perfil de Empresa
+        // Llenamos los datos del Perfil de Empresa
         document.getElementById('perfilEmpresaNombre').innerText = v.razon_social;
         document.getElementById('perfilEmpresaDesc').innerText = v.descripcion_empresa || 'Sin descripción disponible.';
         document.getElementById('perfilEmpresaSede').innerText = v.ubicacion_sede || 'San Salvador';
@@ -370,11 +432,23 @@ async function verDetallesVacante(vacanteId) {
         document.getElementById('perfilEmpresaWeb').href = v.sitio_web || '#';
         document.getElementById('detEmpresaLogo').src = v.url_logo || 'img/default-company.png';
 
-        // 4. Mostramos el modal
-        const modal = new bootstrap.Modal(document.getElementById('modalDetalleVacante'));
+        const btnAplicar = document.getElementById('btnAplicarYa');
+        btnAplicar.onclick = () => {
+            postularseAVacante(vacanteId);
+            
+            const modalElement = document.getElementById('modalDetalleVacante');
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if(modalInstance) modalInstance.hide();
+        };
+        // ------------------------------------------------
+
+        // Mostramos el modal
+        let modal = bootstrap.Modal.getInstance(document.getElementById('modalDetalleVacante'));
+        if (!modal) {
+            modal = new bootstrap.Modal(document.getElementById('modalDetalleVacante'));
+        }
         modal.show();
         
-        // Resetear a la pestaña de "El Puesto" siempre que se abra
         document.getElementById('tab-trabajo').click();
 
     } catch (error) {

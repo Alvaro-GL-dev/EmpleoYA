@@ -32,3 +32,27 @@ body { background-color: var(--bg-gray); font-family: var(--inter); }
 .btn-pipeline.active { transform: scale(1.05); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
 
 .avatar-sm { width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+
+/* --- Estilos compartidos para el Navbar --- */
+.navbar-nav .nav-link {
+    background: none;
+    border: none;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem !important;
+    border-radius: 40px;
+    color: #4a5568;
+    transition: all 0.2s;
+    margin: 0 4px;
+}
+
+/* El fondo azul cuando está seleccionado */
+.navbar-nav .nav-link.active {
+    background-color: var(--primary) !important;
+    color: white !important;
+}
+
+/* Efecto hover suave cuando no está activo */
+.navbar-nav .nav-link:hover:not(.active) {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: var(--primary);
+}

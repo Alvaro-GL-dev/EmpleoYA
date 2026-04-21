@@ -115,78 +115,80 @@ async function cargarMetricasReales() {
 }
 
 // TABLA DE USUARIOS
+// --- VARIABLES GLOBALES PARA LOS FILTROS ---
+let todosLosUsuarios = [];
+let todoElContenido = [];
+
+// ==========================================
+// 1. GESTIÓN DE USUARIOS (CARDS Y FILTROS)
+// ==========================================
 async function listarUsuariosAdmin() {
     const container = document.getElementById("listaUsuariosAdmin");
     if (!container) return;
-    container.innerHTML = '<tr><td colspan="5" class="text-center py-4"><div class="spinner-border text-primary"></div></td></tr>';
+    container.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-primary"></div></div>';
 
     try {
         const res = await fetch(`${API_URL}/admin/usuarios`, { headers: getHeaders() });
-        const usuarios = await res.json();
-
-        if (usuarios.length === 0) {
-            container.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">No hay usuarios.</td></tr>';
-            return;
-        }
-
-        container.innerHTML = usuarios.map(u => {
-            let badgeColor = u.rol === 'ADMINISTRADOR' ? 'dark' : (u.rol === 'EMPRESA' ? 'primary' : 'info');
-            let statusColor = u.estado === 'ACTIVO' ? 'success' : (u.estado === 'SUSPENDIDO' ? 'danger' : 'warning');
-            
-            // Lógica inteligente: Si está suspendido, muestra el botón de Activar. Si no, el de Suspender.
-            let btnAccion = u.estado === 'SUSPENDIDO' 
-                ? `<li><button class="dropdown-item small text-success fw-bold" onclick="cambiarEstadoUsuario('${u.id}', 'activar')"><i class="bi bi-check-circle me-2"></i>Activar</button></li>`
-                : `<li><button class="dropdown-item small text-danger fw-bold" onclick="cambiarEstadoUsuario('${u.id}', 'suspender')"><i class="bi bi-slash-circle me-2"></i>Suspender</button></li>`;
-
-            // Protegemos a los administradores para que no se puedan suspender a sí mismos
-            if (u.rol === 'ADMINISTRADOR') btnAccion = `<li><span class="dropdown-item small text-muted">Protegido</span></li>`;
-
-            return `
-            <tr>
-                <td class="ps-4 py-3">
-                    <div class="d-flex align-items-center gap-3">
-                        <div class="avatar-admin bg-${badgeColor}-soft text-${badgeColor} rounded-circle fw-bold" style="width:35px;height:35px">
-                            ${u.correo_electronico.charAt(0).toUpperCase()}
-                        </div>
-                        <div>
-                            <div class="fw-bold text-dark mb-0">${u.correo_electronico}</div>
-                            <div class="text-muted extra-small">ID: ${u.id.substring(0, 8)}...</div>
-                        </div>
-                    </div>
-                </td>
-                <td><span class="badge bg-${badgeColor} bg-opacity-10 text-${badgeColor} rounded-pill px-3">${u.rol}</span></td>
-                <td><span class="text-${statusColor} small fw-bold"><i class="bi bi-circle-fill me-1" style="font-size:0.5rem"></i> ${u.estado}</span></td>
-                <td class="text-muted small fw-medium">${new Date(u.creado_el || Date.now()).toLocaleDateString()}</td>
-                <td class="pe-4 text-end">
-                    <div class="dropdown">
-                        <button class="btn btn-sm btn-light rounded-circle text-muted" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></button>
-                        <ul class="dropdown-menu shadow-sm border-0">
-                            ${btnAccion}
-                        </ul>
-                    </div>
-                </td>
-            </tr>`;
-        }).join('');
-    } catch (e) { container.innerHTML = '<tr><td colspan="5" class="text-center text-danger py-4">Error DB</td></tr>'; }
+        todosLosUsuarios = await res.json();
+        renderizarUsuarios('TODOS');
+        configurarFiltros('filtrosUsuarios', renderizarUsuarios);
+    } catch (e) { container.innerHTML = '<div class="col-12 text-center text-danger">Error al cargar usuarios</div>'; }
 }
 
-// Nueva función unificada para Activar y Suspender
+function renderizarUsuarios(filtroRol) {
+    const container = document.getElementById("listaUsuariosAdmin");
+    const filtrados = filtroRol === 'TODOS' ? todosLosUsuarios : todosLosUsuarios.filter(u => u.rol === filtroRol);
+
+    if (filtrados.length === 0) {
+        container.innerHTML = '<div class="col-12 text-center text-muted py-5">No hay usuarios en esta categoría.</div>';
+        return;
+    }
+
+    container.innerHTML = filtrados.map(u => {
+        let badgeColor = u.rol === 'ADMINISTRADOR' ? 'dark' : (u.rol === 'EMPRESA' ? 'primary' : 'info');
+        let statusColor = u.estado === 'ACTIVO' ? 'success' : (u.estado === 'SUSPENDIDO' ? 'danger' : 'warning');
+        
+        let btnAccion = u.estado === 'SUSPENDIDO' 
+            ? `<button class="btn btn-sm btn-outline-success rounded-pill fw-bold w-100 mt-3" onclick="cambiarEstadoUsuario('${u.id}', 'activar')"><i class="bi bi-check-circle me-1"></i> Activar Cuenta</button>`
+            : `<button class="btn btn-sm btn-outline-danger rounded-pill fw-bold w-100 mt-3" onclick="cambiarEstadoUsuario('${u.id}', 'suspender')"><i class="bi bi-slash-circle me-1"></i> Suspender</button>`;
+        
+        if (u.rol === 'ADMINISTRADOR') btnAccion = `<button class="btn btn-sm btn-light rounded-pill fw-bold w-100 mt-3" disabled>Cuenta Protegida</button>`;
+
+        return `
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white metric-card">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <div class="avatar-admin bg-${badgeColor}-soft text-${badgeColor} rounded-circle fw-bold fs-5" style="width:50px;height:50px">
+                        ${u.correo_electronico.charAt(0).toUpperCase()}
+                    </div>
+                    <span class="badge bg-${statusColor} bg-opacity-10 text-${statusColor} rounded-pill px-3 py-2">${u.estado}</span>
+                </div>
+                <h6 class="fw-bold text-dark mb-1 text-truncate" title="${u.correo_electronico}">${u.correo_electronico}</h6>
+                <div class="text-muted small mb-3">ID: ${u.id.substring(0, 8)}...</div>
+                <div class="mt-auto border-top pt-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="badge bg-${badgeColor} text-white rounded-pill px-3">${u.rol}</span>
+                        <small class="text-muted extra-small">${new Date(u.creado_el).toLocaleDateString()}</small>
+                    </div>
+                    ${btnAccion}
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
 window.cambiarEstadoUsuario = async (id, accion) => {
-    const verbo = accion === 'activar' ? 'activar' : 'suspender';
-    if(!confirm(`¿Deseas ${verbo} este usuario?`)) return;
+    if(!confirm(`¿Deseas ${accion} este usuario?`)) return;
     try {
         const res = await fetch(`${API_URL}/admin/usuarios/${id}/${accion}`, { method: 'PATCH', headers: getHeaders() });
-        if (res.ok) { 
-            showToast(`Usuario ${accion === 'activar' ? 'activado' : 'suspendido'}`, "success"); 
-            listarUsuariosAdmin(); // Refresca la tabla automáticamente
-        } else {
-            showToast("Error en la operación", "danger");
-        }
+        if (res.ok) { showToast(`Usuario actualizado`, "success"); listarUsuariosAdmin(); }
     } catch (error) { showToast("Error de red", "danger"); }
 };
 
 
-// TABLA DE VACANTES
+// ==========================================
+// 2. GESTIÓN DE VACANTES (CARDS)
+// ==========================================
 async function listarVacantesAdmin() {
     const container = document.getElementById("listaVacantesAdmin");
     if (!container) return;
@@ -195,67 +197,139 @@ async function listarVacantesAdmin() {
         const vacantes = await res.json();
         
         if (vacantes.length === 0) {
-            container.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">No hay vacantes.</td></tr>';
+            container.innerHTML = '<div class="col-12 text-center text-muted py-5">No hay vacantes en el sistema.</div>';
             return;
         }
 
         container.innerHTML = vacantes.map(v => `
-            <tr>
-                <td class="ps-4 fw-bold">${v.titulo_puesto || 'Sin título'}</td>
-                <td class="text-muted">${v.nombre_empresa || 'Empresa Desconocida'}</td>
-                <td><span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3">${v.estado || 'ACTIVA'}</span></td>
-                <td class="text-end pe-4">
-                    <button class="btn btn-sm btn-outline-danger border-0 rounded-circle" onclick="eliminarVacante('${v.id}')"><i class="bi bi-trash"></i></button>
-                </td>
-            </tr>
-        `).join('');
-    } catch (e) { container.innerHTML = '<tr><td colspan="4" class="text-center text-danger py-4">Error API</td></tr>'; }
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white metric-card">
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2">ACTIVA</span>
+                    <button class="btn btn-sm btn-outline-danger border-0 rounded-circle" onclick="eliminarVacante('${v.id}')" title="Eliminar Vacante"><i class="bi bi-trash"></i></button>
+                </div>
+                <h5 class="fw-bold mb-2">${v.titulo_puesto || 'Sin título'}</h5>
+                <p class="text-muted small mb-4"><i class="bi bi-building me-2"></i>${v.nombre_empresa || 'Empresa Desconocida'}</p>
+            </div>
+        </div>`).join('');
+    } catch (e) { container.innerHTML = '<div class="col-12 text-center text-danger">Error al cargar vacantes</div>'; }
 }
 
 window.eliminarVacante = async (id) => {
-    if(!confirm("¿Borrar esta vacante?")) return;
+    if(!confirm("¿Borrar esta vacante de forma permanente?")) return;
     try {
         const res = await fetch(`${API_URL}/admin/vacantes/${id}`, { method: 'DELETE', headers: getHeaders() });
         if (res.ok) { showToast("Eliminada", "success"); listarVacantesAdmin(); cargarMetricasReales(); }
     } catch (error) { showToast("Error", "danger"); }
 };
 
-// TABLA DE FORO/RECURSOS
+
+// ==========================================
+// 3. RECURSOS Y FORO (SOLUCIÓN DE BUG + FILTROS)
+// ==========================================
 async function listarRecursosAdmin() {
     const container = document.getElementById("listaRecursosAdmin");
     if (!container) return;
+    container.innerHTML = '<div class="col-12 text-center py-5"><div class="spinner-border text-primary"></div></div>';
+
     try {
-        const res = await fetch(`${API_URL}/admin/foro`, { headers: getHeaders() }); 
-        const recursos = await res.json();
+        // SOLUCIÓN: Hacemos dos peticiones al mismo tiempo (Recursos y Foro)
+        const [resForo, resRecursos] = await Promise.all([
+            fetch(`${API_URL}/admin/foro`, { headers: getHeaders() }),
+            fetch(`${API_URL}/recursos`, { headers: getHeaders() }) // Traemos los recursos oficiales
+        ]);
+        
+        const foro = resForo.ok ? await resForo.json() : [];
+        const recursos = resRecursos.ok ? await resRecursos.json() : [];
 
-        if (recursos.length === 0) {
-            container.innerHTML = '<tr><td colspan="4" class="text-center text-muted py-4">Foro vacío.</td></tr>';
-            return;
-        }
+        // Los marcamos para saber de dónde vienen y los unimos
+        const foroMarcado = foro.map(f => ({ ...f, origen: 'FORO' }));
+        const recursosMarcados = recursos.map(r => ({ ...r, origen: 'RECURSO' }));
+        
+        todoElContenido = [...recursosMarcados, ...foroMarcado];
 
-        container.innerHTML = recursos.map(r => `
-            <tr>
-                <td class="ps-4 fw-bold">${r.titulo || 'Publicación'}</td>
-                <td><span class="badge bg-primary bg-opacity-10 text-primary">${r.tipo || 'General'}</span></td>
-                <td class="text-muted small">${new Date(r.creado_el || Date.now()).toLocaleDateString()}</td>
-                <td class="text-end pe-4">
-                    <button class="btn btn-sm btn-outline-danger border-0 rounded-circle" onclick="eliminarRecurso('${r.id}')"><i class="bi bi-trash"></i></button>
-                </td>
-            </tr>
-        `).join('');
-    } catch (e) { container.innerHTML = '<tr><td colspan="4" class="text-center text-danger py-4">Error API</td></tr>'; }
+        // Ordenar por fecha (más recientes primero)
+        todoElContenido.sort((a, b) => new Date(b.creado_el) - new Date(a.creado_el));
+
+        renderizarContenido('TODOS');
+        configurarFiltros('filtrosRecursos', renderizarContenido);
+
+    } catch (e) { container.innerHTML = '<div class="col-12 text-center text-danger">Error al cargar contenido</div>'; }
 }
 
-window.eliminarRecurso = async (id) => {
-    if(!confirm("¿Borrar este recurso/post?")) return;
+function renderizarContenido(filtro) {
+    const container = document.getElementById("listaRecursosAdmin");
+    const filtrados = filtro === 'TODOS' ? todoElContenido : todoElContenido.filter(c => c.origen === filtro);
+
+    if (filtrados.length === 0) {
+        container.innerHTML = '<div class="col-12 text-center text-muted py-5">No hay contenido en esta categoría.</div>';
+        return;
+    }
+
+    container.innerHTML = filtrados.map(item => {
+        const esForo = item.origen === 'FORO';
+        const color = esForo ? 'primary' : 'success';
+        const icono = esForo ? 'bi-chat-left-text' : 'bi-journal-bookmark';
+        
+        // Endpoint dinámico para borrar
+        const deleteParams = esForo ? `'${item.id}', 'foro'` : `'${item.id}', 'recursos'`;
+
+        return `
+        <div class="col-md-6 col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4 p-4 h-100 bg-white metric-card">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="badge bg-${color} bg-opacity-10 text-${color} rounded-pill px-3 py-2"><i class="bi ${icono} me-1"></i> ${item.origen}</span>
+                    <button class="btn btn-sm btn-outline-danger border-0 rounded-circle" onclick="eliminarContenido(${deleteParams})" title="Borrar"><i class="bi bi-trash"></i></button>
+                </div>
+                <h6 class="fw-bold mb-2">${item.titulo}</h6>
+                <div class="text-muted small mb-3"><i class="bi bi-person me-1"></i> ${item.autor_nombre || item.autor || 'Admin'}</div>
+                <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                    <span class="badge bg-light text-dark px-2">${item.tipo || item.categoria || 'General'}</span>
+                    <small class="text-muted extra-small">${new Date(item.creado_el || Date.now()).toLocaleDateString()}</small>
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+window.eliminarContenido = async (id, tipoEndpoint) => {
+    if(!confirm("¿Borrar este contenido permanentemente?")) return;
     try {
-        const res = await fetch(`${API_URL}/admin/foro/${id}`, { method: 'DELETE', headers: getHeaders() });
-        if (res.ok) { showToast("Eliminado", "success"); listarRecursosAdmin(); }
-    } catch (error) { showToast("Error", "danger"); }
+        const ruta = tipoEndpoint === 'foro' ? `/foros/${id}` : `/recursos/${id}`;
+        const res = await fetch(`${API_URL}${ruta}`, { method: 'DELETE', headers: getHeaders() });
+        
+        if (res.ok) { showToast("Contenido eliminado", "success"); listarRecursosAdmin(); }
+        else { showToast("Error al eliminar", "danger"); }
+    } catch (error) { showToast("Error de conexión", "danger");
+    }
 };
 
+// FUNCIÓN AUXILIAR PARA BOTONES DE FILTRO
+function configurarFiltros(contenedorId, funcionRender) {
+    const contenedor = document.getElementById(contenedorId);
+    if (!contenedor) return;
+    
+    // Evitamos duplicar eventos si el usuario entra y sale de la pestaña
+    const nuevoContenedor = contenedor.cloneNode(true);
+    contenedor.parentNode.replaceChild(nuevoContenedor, contenedor);
+
+    nuevoContenedor.addEventListener('click', (e) => {
+        if(e.target.tagName === 'BUTTON') {
+            nuevoContenedor.querySelectorAll('button').forEach(b => {
+                b.classList.remove('btn-primary', 'active');
+                b.classList.add('btn-outline-secondary');
+            });
+            e.target.classList.remove('btn-outline-secondary');
+            e.target.classList.add('btn-primary', 'active');
+            
+            const filtro = e.target.getAttribute('data-filter');
+            funcionRender(filtro);
+        }
+    });
+}
+
 async function guardarNuevoRecurso(e) {
-    e.preventDefault(); // Evita que la página se recargue
+    e.preventDefault();
 
     // Recolectamos los datos exactos del formulario
     const nuevoRecurso = {

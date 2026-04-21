@@ -6,54 +6,37 @@ body {
   background-color: #f4f7fc;
 }
 
+/* --- Estilos igualados con Directorio --- */
 .navbar-brand {
   font-weight: 800;
   font-size: 1.7rem;
+  letter-spacing: -0.5px; /* Este detalle hace que las letras se vean igual de juntas */
   background: linear-gradient(135deg, #0b5ed7, #0a58ca);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent !important;
 }
 
-.avatar-sm {
-  width: 36px;
-  height: 36px;
-  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  font-size: 0.9rem;
-}
-
-.avatar-lg {
-  width: 100px;
-  height: 100px;
-  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  font-size: 2.5rem;
-}
-
 #navTabs .nav-link {
   background: none;
   border: none;
   font-weight: 600;
-  padding: 0.6rem 1.2rem;
+  padding: 0.6rem 1.2rem !important;
   border-radius: 40px;
   color: #4a5568;
   transition: all 0.2s;
+  margin: 0 4px; /* Añade la misma separación que el directorio */
 }
 
 #navTabs .nav-link.active {
-  background-color: #0d6efd;
-  color: white;
+  background-color: var(--primary);
+  color: white !important;
+}
+
+/* Agregamos el mismo efecto Hover (fondo azul claro) del directorio */
+#navTabs .nav-link:hover:not(.active) {
+  background-color: rgba(13, 110, 253, 0.1);
+  color: var(--primary);
 }
 
 .search-bar .form-control,
