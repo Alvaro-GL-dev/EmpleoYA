@@ -1,0 +1,467 @@
+* {
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background-color: #f4f7fc;
+}
+
+/* --- Estilos igualados con Directorio --- */
+.navbar-brand {
+  font-weight: 800;
+  font-size: 1.7rem;
+  letter-spacing: -0.5px; /* Este detalle hace que las letras se vean igual de juntas */
+  background: linear-gradient(135deg, #0b5ed7, #0a58ca);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+#navTabs .nav-link {
+  background: none;
+  border: none;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem !important;
+  border-radius: 40px;
+  color: #4a5568;
+  transition: all 0.2s;
+  margin: 0 4px; /* Añade la misma separación que el directorio */
+}
+
+#navTabs .nav-link.active {
+  background-color: var(--primary);
+  color: white !important;
+}
+
+/* Agregamos el mismo efecto Hover (fondo azul claro) del directorio */
+#navTabs .nav-link:hover:not(.active) {
+  background-color: rgba(13, 110, 253, 0.1);
+  color: var(--primary);
+}
+
+.search-bar .form-control,
+.search-bar .form-select,
+.search-bar .input-group-text {
+  border-radius: 60px;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  padding: 0.7rem 1.2rem;
+}
+
+.search-bar .btn-primary {
+  border-radius: 60px;
+  padding: 0.7rem 2rem;
+}
+
+.job-card {
+  border: none;
+  border-radius: 24px;
+  background: white;
+  transition: transform 0.2s ease, box-shadow 0.2s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.job-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.12);
+}
+
+.apply-link {
+  text-decoration: none;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: 0.2s;
+}
+
+.apply-link:hover {
+  gap: 12px;
+}
+
+.card-profile {
+  border: none;
+  border-radius: 32px;
+  background: white;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
+}
+
+.solicitud-card {
+  border-left: 4px solid #0d6efd;
+  background: white;
+  border-radius: 20px;
+  transition: 0.2s;
+}
+
+.solicitud-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.toast-notification {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 1100;
+  min-width: 260px;
+}
+
+@media (max-width: 768px) {
+  #navTabs .nav-link {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* --- Stepper de Progreso Candidato --- */
+.progress-stepper {
+    position: relative;
+    padding-top: 5px;
+}
+.step-line {
+    position: absolute;
+    top: 10px; /* Alineado al centro de los puntos */
+    left: 5%;
+    right: 5%;
+    height: 3px;
+    background-color: #e2e8f0;
+    z-index: 0;
+    border-radius: 5px;
+}
+.step-dot {
+    width: 16px;
+    height: 16px;
+    background-color: #e2e8f0;
+    border-radius: 50%;
+    border: 3px solid #ffffff;
+    box-shadow: 0 0 0 1px #cbd5e1;
+    transition: all 0.3s ease;
+}
+.step-dot.active {
+    background-color: #0d6efd;
+    box-shadow: 0 0 0 2px #0d6efd;
+    transform: scale(1.2);
+}
+
+/* --- Variables y Base --- */
+:root {
+  --primary: #0d6efd;
+  --bg-gray: #f4f7fc;
+  --inter: 'Inter', sans-serif;
+}
+
+body {
+  background-color: var(--bg-gray);
+  font-family: var(--inter);
+  visibility: visible; /* Se cambia por JS, pero por defecto está así */
+}
+
+.body-hidden {
+    visibility: hidden;
+}
+
+.fw-800 { font-weight: 800; }
+
+.hidden-tab { display: none; }
+
+/* --- Navbar --- */
+.navbar-brand {
+  font-weight: 800;
+  font-size: 1.7rem;
+  background: linear-gradient(135deg, #0b5ed7, #0a58ca);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+}
+
+#navTabs .nav-link {
+  background: none;
+  border: none;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  border-radius: 40px;
+  color: #4a5568;
+  transition: all 0.2s;
+}
+
+#navTabs .nav-link.active {
+  background-color: var(--primary);
+  color: white;
+}
+
+/* --- Avatares --- */
+.avatar-sm {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: bold; font-size: 0.9rem;
+}
+
+.avatar-lg {
+  width: 100px; height: 100px;
+  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  color: white; font-weight: bold; font-size: 2.5rem;
+}
+
+/* --- Buscador --- */
+.search-bar .input-group-text, .search-bar .form-control {
+  border-radius: 60px;
+  background-color: white;
+  border: 1px solid #e2e8f0;
+  padding: 0.7rem 1.2rem;
+}
+.input-min-width { min-width: 250px; }
+
+/* --- Tarjetas --- */
+.job-card {
+  border: none;
+  border-radius: 24px;
+  background: white;
+  transition: transform 0.2s ease, box-shadow 0.2s;
+}
+.job-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.12);
+}
+
+.card-profile {
+  background: white;
+  border-radius: 32px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.05);
+}
+
+.solicitud-card {
+  border-left: 4px solid var(--primary);
+  background: white;
+  border-radius: 20px;
+  transition: 0.2s;
+}
+.solicitud-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Varios --- */
+.toast-notification {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  z-index: 1100;
+  min-width: 260px;
+}
+
+/* =========================================
+   DISEÑO PREMIUM - PERFIL CANDIDATO
+   ========================================= */
+.profile-banner {
+  border-radius: 28px;
+  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(13, 110, 253, 0.2);
+}
+
+.profile-banner::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.card-pro {
+  border: 1px solid #f1f5f9;
+  border-radius: 28px;
+  box-shadow: 0 10px 40px -10px rgba(0,0,0,0.06);
+  background: #ffffff;
+  transition: transform 0.3s ease;
+}
+
+.cover-photo {
+  height: 140px;
+  background: linear-gradient(120deg, #e2e8f0 0%, #cbd5e1 100%);
+  border-radius: 28px 28px 0 0;
+  position: relative;
+}
+
+.avatar-overlap {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 6px solid #ffffff;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  margin-top: -55px;
+  background: linear-gradient(135deg, #1e293b, #334155);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 800;
+  position: relative;
+  z-index: 2;
+}
+
+.input-saas {
+  background-color: #f8fafc;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  padding: 0.85rem 1.2rem;
+  font-size: 0.95rem;
+  color: #334155;
+  transition: all 0.25s ease;
+}
+
+.input-saas:focus {
+  background-color: #ffffff;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.12);
+  outline: none;
+}
+
+.label-saas {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.skill-pill {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 8px 16px;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  display: inline-block;
+  margin: 4px;
+  border: 1px solid #e2e8f0;
+}
+
+/* Estilos para los Posts del Foro */
+.post-card {
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #eef2f7;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.post-header .avatar-post {
+  width: 45px;
+  height: 45px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.btn-interaction {
+  color: #64748b;
+  font-weight: 600;
+  font-size: 0.85rem;
+  border: none;
+  background: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.btn-interaction:hover {
+  background: #f1f5f9;
+  color: #0d6efd;
+}
+
+.tag-comunidad {
+  font-size: 0.7rem;
+  padding: 3px 10px;
+  border-radius: 50px;
+  background: #e0e7ff;
+  color: #4338ca;
+  font-weight: 700;
+}
+
+/* --- Estilos para Modal de Creación (SaaS Style) --- */
+.modal-content.rounded-4 {
+    border-radius: 24px !important;
+}
+
+.label-saas {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.input-saas {
+    background-color: #f8fafc;
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    color: #334155;
+    transition: all 0.2s ease;
+}
+
+.input-saas:focus {
+    background-color: #ffffff;
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.1);
+    outline: none;
+}
+
+.btn-primary.rounded-pill {
+    padding: 10px 24px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    transition: transform 0.2s;
+}
+
+.btn-primary.rounded-pill:hover {
+    transform: translateY(-1px);
+}
+
+.recurso-card, .foro-card-clickable { transition: transform .2s ease, box-shadow .2s ease; }
+.recurso-card:hover, .foro-card-clickable:hover { transform: translateY(-4px); box-shadow: 0 18px 30px rgba(0,0,0,.08); }
+.recurso-card .btn-link, .foro-card-clickable .btn-link { font-size: .85rem; }
+.recurso-detalle-img { max-height: 320px; width: 100%; object-fit: cover; background: #f1f5f9; }
+.recurso-contenido, .foro-contenido { color: #475569; line-height: 1.75; white-space: pre-line; }
+.respuesta-card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 18px; padding: 1rem; }
+.tag-recurso { display: inline-block; background: rgba(13,110,253,.08); color: #0d6efd; padding: .35rem .7rem; border-radius: 999px; font-size: .78rem; font-weight: 700; }
+
+
+/* Recursos */
+.recurso-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.recurso-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.recurso-img-fallback {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,88 @@
+:root {
+  --primary: #0d6efd;
+  --primary-soft: rgba(13, 110, 253, 0.08);
+  --info-soft: rgba(13, 202, 240, 0.1);
+  --success-soft: rgba(25, 135, 84, 0.1);
+  --slate-50: #f8fafc;
+  --slate-200: #e2e8f0;
+  --slate-800: #1e293b;
+}
+
+body {
+  background: #fdfdfd;
+  font-family: 'Inter', sans-serif;
+  color: var(--slate-800);
+}
+
+.fw-800 { font-weight: 800; }
+
+/* Tarjetas Pro */
+.card-custom {
+  border-radius: 24px !important;
+  border: 1px solid var(--slate-200) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important;
+}
+
+.card-stat {
+    background: white;
+    border-radius: 24px;
+    border: 1px solid var(--slate-200);
+    transition: all 0.3s ease;
+}
+.card-stat:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+.stat-number { font-size: 2.5rem; font-weight: 800; color: var(--slate-800); letter-spacing: -2px; }
+.stat-label { font-weight: 600; color: #64748b; font-size: 0.8rem; text-transform: uppercase; }
+
+.stat-icon {
+    width: 50px; height: 50px;
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; color: var(--primary);
+}
+
+.bg-primary-soft { background: var(--primary-soft); }
+.bg-info-soft { background: var(--info-soft); color: #0dcaf0; }
+.bg-success-soft { background: var(--success-soft); color: #198754; }
+
+/* Formularios Estilizados */
+.form-label-custom { font-size: 0.8rem; font-weight: 700; color: #475569; margin-bottom: 8px; display: block; }
+.form-control-custom {
+    width: 100%; padding: 12px 20px;
+    border-radius: 14px; border: 1px solid var(--slate-200);
+    background: var(--slate-50); font-size: 0.95rem;
+    transition: all 0.2s;
+}
+.form-control-custom:focus {
+    outline: none; border-color: var(--primary); background: white;
+    box-shadow: 0 0 0 4px var(--primary-soft);
+}
+
+.icon-box {
+    width: 32px; height: 32px; border-radius: 10px;
+    background: var(--slate-50); display: flex; align-items: center; justify-content: center;
+}
+
+/* --- Estilos compartidos para el Navbar --- */
+.navbar-nav .nav-link {
+    background: none;
+    border: none;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem !important;
+    border-radius: 40px;
+    color: #4a5568;
+    transition: all 0.2s;
+    margin: 0 4px;
+}
+
+/* El fondo azul cuando está seleccionado */
+.navbar-nav .nav-link.active {
+    background-color: var(--primary) !important;
+    color: white !important;
+}
+
+/* Efecto hover suave cuando no está activo */
+.navbar-nav .nav-link:hover:not(.active) {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: var(--primary);
+}

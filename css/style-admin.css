@@ -1,0 +1,134 @@
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.bg-app {
+    background-color: #f3f4f6; /* Gris muy suave para fondo SaaS */
+}
+
+/* Sidebar Premium */
+.sidebar-premium {
+    width: 280px;
+    height: 100vh;
+    background-color: #0f172a; /* Azul oscuro corporativo */
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.sidebar-brand {
+    padding: 2rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.sidebar-heading {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #475569;
+    letter-spacing: 1px;
+}
+
+.sidebar-premium .list-group-item {
+    background: transparent;
+    color: #94a3b8;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.sidebar-premium .list-group-item:hover {
+    color: white;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar-premium .list-group-item.active {
+    background-color: #3b82f6;
+    color: white;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+.admin-card {
+    background-color: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.avatar-admin {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-logout {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-radius: 12px;
+    padding: 0.8rem;
+    transition: 0.3s;
+}
+
+.btn-logout:hover {
+    background-color: #ef4444;
+    color: white;
+}
+
+/* Main Content & Cards */
+.top-nav {
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.fw-900 { font-weight: 900; letter-spacing: -1px; }
+.tracking-wider { letter-spacing: 0.05em; }
+.tracking-tight { letter-spacing: -0.03em; }
+.extra-small { font-size: 0.7rem; }
+
+.metric-card {
+    border-radius: 20px;
+    border: 1px solid rgba(0,0,0,0.02);
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+}
+
+.metric-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.bg-primary-soft { background-color: rgba(59, 130, 246, 0.1); }
+.bg-success-soft { background-color: rgba(16, 185, 129, 0.1); }
+.bg-warning-soft { background-color: rgba(245, 158, 11, 0.1); }
+
+table th { font-weight: 700 !important; }
